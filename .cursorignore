@@ -1,0 +1,33 @@
+# Arquivos e diretórios específicos do Cursor
+.cursor/
+.cursor-cache/
+
+# Arquivos de cache e temporários
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Diretórios de ambiente virtual
+venv/
+env/
+.env/
+.venv/
+
+# Arquivos de IDE
+.vscode/
+.idea/
+
+# Arquivos de sistema
+.DS_Store
+Thumbs.db
+
+# Arquivos de log e cache
+*.log
+.cache/
+.pytest_cache/
+
+# Arquivos de build e distribuição
+dist/
+build/
+*.egg-info/ 
