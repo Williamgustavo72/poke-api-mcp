@@ -1,0 +1,1464 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LotoSimulator Brasil</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- html2canvas para exportar como imagem -->
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    
+    <!-- jsPDF para exportar como PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    
+    <!-- FileSaver.js para download de arquivos -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    
+    <!-- docx para exportar como documento Word -->
+    <script src="https://unpkg.com/docx@8.2.3/build/index.js"></script>
+    
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #1a237e;
+            --secondary-color: #4a148c;
+            --accent-color: #ffd700;
+            --mega-sena-color: #209869;
+            --lotofacil-color: #930089;
+            --quina-color: #260085;
+            --timemania-color: #00FF48;
+            --dupla-sena-color: #A61324;
+            --dia-de-sorte-color: #CB852B;
+            --super-sete-color: #A8CF45;
+            --mais-milionaria-color: #EDED1C;
+            --federal-color: #103099;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding-bottom: 2rem;
+        }
+
+        .navbar {
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            padding: 1rem 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            margin-bottom: 1rem;
+            overflow: hidden;
+            height: auto;
+            background: white;
+        }
+
+        .card-header {
+            padding: 0.75rem;
+            border-bottom: none;
+        }
+
+        .card-header h5 {
+            font-size: 1rem;
+        }
+
+        .card-body {
+            padding: 1rem;
+        }
+
+        .btn-lottery {
+            padding: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .lottery-numbers {
+            gap: 0.4rem;
+            padding: 0.75rem;
+            margin: 0.75rem 0;
+        }
+
+        .number-ball {
+            width: 32px;
+            height: 32px;
+            font-size: 0.9rem;
+        }
+
+        .lottery-info {
+            padding: 0.75rem;
+            margin-top: 0.75rem;
+        }
+
+        .lottery-info small {
+            font-size: 0.8rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .mega-virada {
+            background: linear-gradient(45deg, #ffffff, #f8f9fa);
+            border: 3px solid var(--mega-sena-color) !important;
+            margin-bottom: 3rem;
+        }
+
+        .mega-virada .card-header {
+            background: linear-gradient(45deg, var(--mega-sena-color), #1a7d55) !important;
+            padding: 1.5rem;
+        }
+
+        /* Cores específicas das loterias */
+        .mega-sena .card-header { background: linear-gradient(135deg, var(--mega-sena-color), #1a7f56); }
+        .lotofacil .card-header { background: linear-gradient(135deg, var(--lotofacil-color), #7a0073); }
+        .quina .card-header { background: linear-gradient(135deg, var(--quina-color), #1e006b); }
+        .timemania .card-header { background: linear-gradient(135deg, var(--timemania-color), #00cc3a); }
+        .dupla-sena .card-header { background: linear-gradient(135deg, var(--dupla-sena-color), #8a0f1e); }
+        .dia-de-sorte .card-header { background: linear-gradient(135deg, var(--dia-de-sorte-color), #a66c23); }
+        .super-sete .card-header { background: linear-gradient(135deg, var(--super-sete-color), #94b53b); }
+        .mais-milionaria .card-header { background: linear-gradient(135deg, var(--mais-milionaria-color), #d6d619); }
+        .federal .card-header { background: linear-gradient(135deg, var(--federal-color), #0d2580); }
+
+        .mega-sena .btn-lottery { background: var(--mega-sena-color); border-color: var(--mega-sena-color); }
+        .lotofacil .btn-lottery { background: var(--lotofacil-color); border-color: var(--lotofacil-color); }
+        .quina .btn-lottery { background: var(--quina-color); border-color: var(--quina-color); }
+        .timemania .btn-lottery { background: var(--timemania-color); border-color: var(--timemania-color); color: #000; }
+        .dupla-sena .btn-lottery { background: var(--dupla-sena-color); border-color: var(--dupla-sena-color); }
+        .dia-de-sorte .btn-lottery { background: var(--dia-de-sorte-color); border-color: var(--dia-de-sorte-color); }
+        .super-sete .btn-lottery { background: var(--super-sete-color); border-color: var(--super-sete-color); color: #000; }
+        .mais-milionaria .btn-lottery { background: var(--mais-milionaria-color); border-color: var(--mais-milionaria-color); color: #000; }
+
+        .mega-sena .number-ball { background: linear-gradient(135deg, var(--mega-sena-color), #1a7f56); }
+        .lotofacil .number-ball { background: linear-gradient(135deg, var(--lotofacil-color), #7a0073); }
+        .quina .number-ball { background: linear-gradient(135deg, var(--quina-color), #1e006b); }
+        .timemania .number-ball { background: linear-gradient(135deg, var(--timemania-color), #00cc3a); color: #000; }
+        .dupla-sena .number-ball { background: linear-gradient(135deg, var(--dupla-sena-color), #8a0f1e); }
+        .dia-de-sorte .number-ball { background: linear-gradient(135deg, var(--dia-de-sorte-color), #a66c23); }
+        .super-sete .number-ball { background: linear-gradient(135deg, var(--super-sete-color), #94b53b); color: #000; }
+        .mais-milionaria .number-ball { background: linear-gradient(135deg, var(--mais-milionaria-color), #d6d619); color: #000; }
+
+        @media (max-width: 768px) {
+            .number-ball {
+                width: 30px;
+                height: 30px;
+                font-size: 0.8rem;
+            }
+            
+            .card-body {
+                padding: 0.75rem;
+            }
+
+            .lottery-numbers {
+                gap: 0.3rem;
+                padding: 0.5rem;
+            }
+
+            .btn-lottery {
+                padding: 0.4rem 1rem;
+                font-size: 0.8rem;
+            }
+        }
+
+        /* Card Styles */
+        .card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            margin-bottom: 1rem;
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-header {
+            border-radius: 12px 12px 0 0 !important;
+            padding: 0.75rem;
+        }
+
+        .card-body {
+            padding: 1rem;
+        }
+
+        /* Lottery Type Specific Styles */
+        .mega-sena .card-header {
+            background: linear-gradient(45deg, #1a472a, #2e8b57);
+        }
+
+        .mega-virada .card-header {
+            background: linear-gradient(45deg, #ffd700, #daa520);
+        }
+
+        .lotofacil .card-header {
+            background: linear-gradient(45deg, #800080, #ba55d3);
+        }
+
+        .quina .card-header {
+            background: linear-gradient(45deg, #4b0082, #8a2be2);
+        }
+
+        .lotomania .card-header {
+            background: linear-gradient(45deg, #ff4500, #ff6347);
+        }
+
+        .timemania .card-header {
+            background: linear-gradient(45deg, #006400, #32cd32);
+        }
+
+        .dia-de-sorte .card-header {
+            background: linear-gradient(45deg, #b8860b, #daa520);
+        }
+
+        .dupla-sena .card-header {
+            background: linear-gradient(45deg, #8b0000, #dc143c);
+        }
+
+        .super-sete .card-header {
+            background: linear-gradient(45deg, #4169e1, #1e90ff);
+        }
+
+        .mais-milionaria .card-header {
+            background: linear-gradient(45deg, #483d8b, #6a5acd);
+        }
+
+        /* Button Styles */
+        .btn-lottery {
+            width: 100%;
+            margin-bottom: 1rem;
+            border-radius: 10px;
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .btn-lottery:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.02);
+        }
+
+        /* Lottery Numbers Display */
+        .lottery-numbers {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            justify-content: center;
+            margin: 1rem 0;
+        }
+
+        .lottery-number {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f8f9fa;
+            border-radius: 50%;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        /* Lottery Info Section */
+        .lottery-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .lottery-info small {
+            display: block;
+            color: #6c757d;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .col-md-4 {
+                margin-bottom: 1rem;
+            }
+            
+            .lottery-number {
+                width: 35px;
+                height: 35px;
+                font-size: 0.9rem;
+            }
+        }
+
+        .historico-container {
+    max-height: 600px;
+    overflow-y: auto;
+    padding: 1rem;
+}
+
+.historico-container .card {
+    transition: transform 0.2s;
+}
+
+.historico-container .card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+#filtro-loteria {
+    max-width: 300px;
+    margin-bottom: 1rem;
+}
+
+.trevos-container {
+    border-top: 1px solid #eee;
+    padding-top: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+        /* Estilos gerais */
+        body {
+            background-color: #f8f9fa;
+        }
+
+        /* Estilos dos cards */
+        .lottery-card {
+            height: 100%;
+            min-height: 450px;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s;
+            border: none;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .lottery-card .card-body {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .lottery-card .lottery-numbers {
+            flex: 1;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            justify-content: center;
+            align-items: flex-start;
+            margin: 15px 0;
+            padding: 10px;
+        }
+
+        .lottery-card .lottery-info {
+            margin-top: auto;
+        }
+
+        /* Ajuste específico para Lotomania */
+        .lotomania-card .lottery-numbers {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 4px;
+            padding: 10px;
+        }
+
+        /* Estilos específicos para cada loteria */
+        .mega-sena-card .card-header {
+            background: linear-gradient(45deg, #209869, #006437);
+        }
+
+        .lotofacil-card .card-header {
+            background: linear-gradient(45deg, #930089, #630089);
+        }
+
+        .quina-card .card-header {
+            background: linear-gradient(45deg, #260085, #160085);
+        }
+
+        .lotomania-card .card-header {
+            background: linear-gradient(45deg, #FF6B1C, #D94E00);
+        }
+
+        .timemania-card .card-header {
+            background: linear-gradient(45deg, #00FF7F, #00B359);
+        }
+
+        .dia-de-sorte-card .card-header {
+            background: linear-gradient(45deg, #CB8E1D, #986614);
+        }
+
+        .super-sete-card .card-header {
+            background: linear-gradient(45deg, #A42A2A, #751D1D);
+        }
+
+        .dupla-sena-card .card-header {
+            background: linear-gradient(45deg, #A020F0, #7B1FA2);
+        }
+
+        .mais-milionaria-card .card-header {
+            background: linear-gradient(45deg, #FFD700, #B8860B);
+        }
+
+        /* Estilos dos números */
+        .lottery-numbers {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            justify-content: center;
+            margin: 15px 0;
+            min-height: 60px;
+        }
+
+        .number-ball {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: #007bff;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        /* Ajuste específico para Lotomania que tem mais números */
+        .lotomania-card .lottery-numbers {
+            gap: 3px;
+        }
+
+        .lotomania-card .number-ball {
+            width: 28px;
+            height: 28px;
+            font-size: 12px;
+        }
+
+        /* Estilos das informações */
+        .lottery-info {
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+
+        .premiacao-container {
+            font-size: 0.85rem;
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .lottery-card {
+                margin-bottom: 1rem;
+            }
+            
+            .number-ball {
+                width: 30px;
+                height: 30px;
+                font-size: 0.9rem;
+            }
+
+            .lotomania-card .number-ball {
+                width: 25px;
+                height: 25px;
+                font-size: 11px;
+            }
+        }
+
+        /* Estilos específicos para Lotomania */
+        .lotomania-card {
+            background-color: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .lotomania-card .card-header {
+            background: #FF6B1C;
+            color: white;
+            padding: 10px 15px;
+        }
+
+        .lotomania-card .card-body {
+            padding: 15px;
+        }
+
+        .lotomania-card .lottery-numbers {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 4px;
+            padding: 10px;
+            justify-content: center;
+        }
+
+        .lotomania-card .number-ball {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #007bff;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+            margin: 2px;
+        }
+
+        .lotomania-card .btn-primary {
+            background: #0056b3;
+            border: none;
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+        }
+
+        .lotomania-card .lottery-info {
+            margin-top: 15px;
+            font-size: 0.9rem;
+        }
+
+        .lotomania-card .lottery-info p {
+            margin-bottom: 5px;
+            color: #666;
+        }
+
+        .lotomania-card .lottery-info i {
+            width: 20px;
+            color: #FF6B1C;
+        }
+
+        @media (max-width: 768px) {
+            .lotomania-card .lottery-numbers {
+                grid-template-columns: repeat(8, 1fr);
+            }
+
+            .lotomania-card .number-ball {
+                width: 25px;
+                height: 25px;
+                font-size: 11px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark mb-4">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-clover me-2"></i>
+                LotoSimulator Brasil
+            </a>
+        </div>
+    </nav>
+
+    <div class="container py-4">
+        <h1 class="text-center mb-4">Simulador de Loterias - Brasil</h1>
+
+        <!-- Grid de Jogos - 3 colunas -->
+<div class="row">
+    <!-- Mega da Virada - Card Centralizado -->
+    <div class="col-12 mb-4">
+        <div class="card mega-sena mega-virada">
+            <div class="card-header text-white text-center">
+                <h3 class="mb-0">
+                    <i class="fas fa-trophy me-2"></i>
+                    Mega da Virada 2024
+                </h3>
+            </div>
+            <div class="card-body text-center">
+                <button class="btn btn-lottery btn-success mb-3" onclick="gerarJogo('mega-sena')">
+                    <i class="fas fa-random me-2"></i>
+                    Gerar Jogo
+                </button>
+                <div id="mega-virada-numeros" class="lottery-numbers"></div>
+                <div class="lottery-info">
+                    <h4 class="text-success">Prêmio Estimado: R$ 600.000.000,00</h4>
+                    <p class="text-muted mb-0">Sorteio: 31/12/2023 às 20h</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Coluna 1 -->
+    <div class="col-md-4">
+        <!-- Mega-Sena -->
+        <div class="card mega-sena mb-4">
+            <div class="card-header text-white">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-clover me-2"></i>
+                    Mega-Sena
+                </h5>
+            </div>
+            <div class="card-body">
+                <button class="btn btn-lottery text-white" onclick="gerarJogo('mega-sena')">
+                    <i class="fas fa-random me-2"></i>
+                    Gerar Jogo
+                </button>
+                <div id="mega-sena-numeros" class="lottery-numbers"></div>
+                <div class="lottery-info mt-3">
+                    <p><strong>Dias de Sorteio:</strong> <span id="mega-sena-dias">Quarta e Sábado</span></p>
+                    <p><strong>Último Concurso:</strong> <span id="mega-sena-concurso">-</span></p>
+                    <p><strong>Data do Sorteio:</strong> <span id="mega-sena-data">-</span></p>
+                </div>
+                <div id="mega-sena-resultado" class="lottery-numbers"></div>
+            </div>
+        </div>
+
+        <!-- Lotomania -->
+        <div class="col-md-4 mb-4">
+                <div class="card lotomania-card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-star me-2"></i>
+                            Lotomania
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <button class="btn btn-primary" onclick="gerarJogo('lotomania')">
+                            <i class="fas fa-random me-2"></i>
+                            Gerar Jogo
+                        </button>
+                        <div id="lotomania-numeros" class="lottery-numbers">
+                            <!-- Números serão gerados aqui -->
+                        </div>
+                        <div class="lottery-info mt-3">
+                            <p><strong>Dias de Sorteio:</strong> <span id="lotomania-dias">Segunda, Quarta e Sexta</span></p>
+                            <p><strong>Último Concurso:</strong> <span id="lotomania-concurso">-</span></p>
+                            <p><strong>Data do Sorteio:</strong> <span id="lotomania-data">-</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        <!-- Super Sete -->
+        <div class="card super-sete mb-4">
+            <div class="card-header text-white">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-dice-seven me-2"></i>
+                    Super Sete
+                </h5>
+            </div>
+            <div class="card-body">
+                <button class="btn btn-lottery text-white" onclick="gerarJogo('super-sete')">
+                    <i class="fas fa-random me-2"></i>
+                    Gerar Jogo
+                </button>
+                <div id="super-sete-numeros" class="lottery-numbers"></div>
+                <div class="lottery-info mt-3">
+                    <p><strong>Dias de Sorteio:</strong> <span id="super-sete-dias">Segunda, Quarta e Sexta</span></p>
+                    <p><strong>Último Concurso:</strong> <span id="super-sete-concurso">-</span></p>
+                </div>
+                <div id="super-sete-resultado" class="lottery-numbers"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Coluna 2 -->
+    <div class="col-md-4">
+        <!-- Lotofácil -->
+        <div class="card lotofacil mb-4">
+            <div class="card-header text-white">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-star me-2"></i>
+                    Lotofácil
+                </h5>
+            </div>
+            <div class="card-body">
+                <button class="btn btn-lottery text-white" onclick="gerarJogo('lotofacil')">
+                    <i class="fas fa-random me-2"></i>
+                    Gerar Jogo
+                </button>
+                <div id="lotofacil-numeros" class="lottery-numbers"></div>
+                <div class="lottery-info mt-3">
+                    <p><strong>Dias de Sorteio:</strong> <span id="lotofacil-dias">Segunda a Sábado</span></p>
+                    <p><strong>Último Concurso:</strong> <span id="lotofacil-concurso">-</span></p>
+                    <p><strong>Data do Sorteio:</strong> <span id="lotofacil-data">-</span></p>
+                </div>
+                <div id="lotofacil-resultado" class="lottery-numbers"></div>
+            </div>
+        </div>
+
+        <!-- Timemania -->
+        <div class="card timemania mb-4">
+            <div class="card-header text-white">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-futbol me-2"></i>
+                    Timemania
+                </h5>
+            </div>
+            <div class="card-body">
+                <button class="btn btn-lottery text-white" onclick="gerarJogo('timemania')">
+                    <i class="fas fa-random me-2"></i>
+                    Gerar Jogo
+                </button>
+                <div id="timemania-numeros" class="lottery-numbers"></div>
+                <div class="lottery-info mt-3">
+                    <p><strong>Dias de Sorteio:</strong> <span id="timemania-dias">Terça, Quinta e Sábado</span></p>
+                    <p><strong>Último Concurso:</strong> <span id="timemania-concurso">-</span></p>
+                </div>
+                <div id="timemania-resultado" class="lottery-numbers"></div>
+            </div>
+        </div>
+
+        <!-- Dia de Sorte -->
+        <div class="card dia-de-sorte mb-4">
+            <div class="card-header text-white">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-sun me-2"></i>
+                    Dia de Sorte
+                </h5>
+            </div>
+            <div class="card-body">
+                <button class="btn btn-lottery text-white" onclick="gerarJogo('dia-de-sorte')">
+                    <i class="fas fa-random me-2"></i>
+                    Gerar Jogo
+                </button>
+                <div id="dia-de-sorte-numeros" class="lottery-numbers"></div>
+                <div class="lottery-info mt-3">
+                    <p><strong>Dias de Sorteio:</strong> <span id="dia-de-sorte-dias">Terça, Quinta e Sábado</span></p>
+                    <p><strong>Último Concurso:</strong> <span id="dia-de-sorte-concurso">-</span></p>
+                </div>
+                <div id="dia-de-sorte-resultado" class="lottery-numbers"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Coluna 3 -->
+    <div class="col-md-4">
+        <!-- Quina -->
+        <div class="card quina mb-4">
+            <div class="card-header text-white">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-dice-five me-2"></i>
+                    Quina
+                </h5>
+            </div>
+            <div class="card-body">
+                <button class="btn btn-lottery text-white" onclick="gerarJogo('quina')">
+                    <i class="fas fa-random me-2"></i>
+                    Gerar Jogo
+                </button>
+                <div id="quina-numeros" class="lottery-numbers"></div>
+                <div class="lottery-info mt-3">
+                    <p><strong>Dias de Sorteio:</strong> <span id="quina-dias">Segunda a Sábado</span></p>
+                    <p><strong>Último Concurso:</strong> <span id="quina-concurso">-</span></p>
+                    <p><strong>Data do Sorteio:</strong> <span id="quina-data">-</span></p>
+                </div>
+                <div id="quina-resultado" class="lottery-numbers"></div>
+            </div>
+        </div>
+
+        <!-- Dupla Sena -->
+        <div class="card dupla-sena mb-4">
+            <div class="card-header text-white">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-dice-two me-2"></i>
+                    Dupla Sena
+                </h5>
+            </div>
+            <div class="card-body">
+                <button class="btn btn-lottery text-white" onclick="gerarJogo('dupla-sena')">
+                    <i class="fas fa-random me-2"></i>
+                    Gerar Jogo
+                </button>
+                <div id="dupla-sena-numeros" class="lottery-numbers"></div>
+                <div class="lottery-info mt-3">
+                    <p><strong>Dias de Sorteio:</strong> <span id="dupla-sena-dias">Segunda, Quarta e Sexta</span></p>
+                    <p><strong>Último Concurso:</strong> <span id="dupla-sena-concurso">-</span></p>
+                </div>
+                <div id="dupla-sena-resultado" class="lottery-numbers"></div>
+            </div>
+        </div>
+
+        <!-- +Milionária -->
+        <div class="card mais-milionaria mb-4">
+            <div class="card-header text-white">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-dollar-sign me-2"></i>
+                    +Milionária
+                </h5>
+            </div>
+            <div class="card-body">
+                <button class="btn btn-lottery text-white" onclick="gerarJogo('mais-milionaria')">
+                    <i class="fas fa-random me-2"></i>
+                    Gerar Jogo
+                </button>
+                <div id="mais-milionaria-numeros" class="lottery-numbers"></div>
+                <div id="mais-milionaria-trevos" class="lottery-numbers"></div>
+                <div class="lottery-info mt-3">
+                    <p><strong>Dias de Sorteio:</strong> <span id="mais-milionaria-dias">Sábado</span></p>
+                    <p><strong>Último Concurso:</strong> <span id="mais-milionaria-concurso">-</span></p>
+                </div>
+                <div id="mais-milionaria-resultado" class="lottery-numbers"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+        <!-- Seção de Histórico de Jogos -->
+<div class="row mt-5">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0">
+                        <i class="fas fa-history me-2"></i>
+                        Histórico de Jogos
+                    </h4>
+                    <div class="btn-group">
+                        <button class="btn btn-light btn-sm" onclick="exportarHistoricoPDF()">
+                            <i class="fas fa-file-pdf me-1"></i> PDF
+                        </button>
+                        <button class="btn btn-light btn-sm" onclick="exportarHistoricoImagem()">
+                            <i class="fas fa-image me-1"></i> Imagem
+                        </button>
+                        <button class="btn btn-light btn-sm" onclick="exportarHistoricoDoc()">
+                            <i class="fas fa-file-word me-1"></i> Documento
+                        </button>
+                        <button class="btn btn-light btn-sm" onclick="compartilharHistorico()">
+                            <i class="fas fa-share-alt me-1"></i> Compartilhar
+                        </button>
+                        <button class="btn btn-danger btn-sm" onclick="confirmarLimparHistorico()">
+                            <i class="fas fa-trash me-1"></i> Limpar
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <label for="filtro-loteria" class="form-label">Filtrar por Loteria:</label>
+                    <select class="form-select" id="filtro-loteria" onchange="filtrarHistorico(this.value)">
+                        <option value="">Todos os Jogos</option>
+                        <option value="mega-sena">Mega-Sena</option>
+                        <option value="lotofacil">Lotofácil</option>
+                        <option value="quina">Quina</option>
+                        <option value="lotomania">Lotomania</option>
+                        <option value="timemania">Timemania</option>
+                        <option value="dia-de-sorte">Dia de Sorte</option>
+                        <option value="super-sete">Super Sete</option>
+                        <option value="dupla-sena">Dupla Sena</option>
+                        <option value="mais-milionaria">+Milionária</option>
+                    </select>
+                </div>
+                <div id="historico-contador" class="text-muted mb-3"></div>
+                <div id="historico-container" class="historico-jogos"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white text-center py-4 mt-5">
+        <div class="container">
+            <p class="mb-0"> 2024 LotoSimulator Brasil - Desenvolvido com <i class="fas fa-heart text-danger"></i></p>
+        </div>
+    </footer>
+
+    <!-- Modal de Exportação -->
+    <div class="modal fade" id="exportarModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title">
+                        <i class="fas fa-download me-2"></i>
+                        Exportar Histórico
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="list-group">
+                        <button onclick="exportarPDF()" class="list-group-item list-group-item-action d-flex align-items-center">
+                            <i class="fas fa-file-pdf text-danger me-3 fa-lg"></i>
+                            <div>
+                                <h6 class="mb-1">PDF</h6>
+                                <small class="text-muted">Exportar como documento PDF</small>
+                            </div>
+                        </button>
+                        <button onclick="exportarDocumento()" class="list-group-item list-group-item-action d-flex align-items-center">
+                            <i class="fas fa-file-word text-primary me-3 fa-lg"></i>
+                            <div>
+                                <h6 class="mb-1">Documento</h6>
+                                <small class="text-muted">Salvar como documento de texto</small>
+                            </div>
+                        </button>
+                        <button onclick="exportarImagem()" class="list-group-item list-group-item-action d-flex align-items-center">
+                            <i class="fas fa-file-image text-success me-3 fa-lg"></i>
+                            <div>
+                                <h6 class="mb-1">Imagem</h6>
+                                <small class="text-muted">Salvar como imagem PNG</small>
+                            </div>
+                        </button>
+                        <button onclick="compartilhar()" class="list-group-item list-group-item-action d-flex align-items-center">
+                            <i class="fas fa-share-alt text-info me-3 fa-lg"></i>
+                            <div>
+                                <h6 class="mb-1">Compartilhar</h6>
+                                <small class="text-muted">Compartilhar via WhatsApp ou Email</small>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function criarBolinha(numero, tipo = 'normal') {
+            const classe = tipo === 'trevo' ? 'trevo-ball' : 'number-ball';
+            return `<div class="${classe}">${numero}</div>`;
+        }
+
+        function gerarJogo(tipoLoteria) {
+            console.log('Gerando jogo para:', tipoLoteria);
+            
+            // Configurações para cada tipo de loteria
+            const configLoterias = {
+                'mega-sena': { min: 1, max: 60, quantidade: 6 },
+                'lotofacil': { min: 1, max: 25, quantidade: 15 },
+                'quina': { min: 1, max: 80, quantidade: 5 },
+                'lotomania': { min: 1, max: 100, quantidade: 50 },
+                'timemania': { min: 1, max: 80, quantidade: 10 },
+                'dia-de-sorte': { min: 1, max: 31, quantidade: 7 },
+                'super-sete': { min: 0, max: 9, quantidade: 7 },
+                'dupla-sena': { min: 1, max: 50, quantidade: 6 },
+                'mais-milionaria': { min: 1, max: 50, quantidade: 6, trevos: { min: 1, max: 6, quantidade: 2 } }
+            };
+
+            const config = configLoterias[tipoLoteria];
+            if (!config) {
+                console.error('Tipo de loteria não reconhecido:', tipoLoteria);
+                return;
+            }
+
+            // Função para gerar números aleatórios únicos
+            function gerarNumerosUnicos(min, max, quantidade) {
+                const numeros = new Set();
+                while (numeros.size < quantidade) {
+                    const numero = Math.floor(Math.random() * (max - min + 1)) + min;
+                    numeros.add(numero.toString().padStart(2, '0'));
+                }
+                return Array.from(numeros).sort((a, b) => parseInt(a) - parseInt(b));
+            }
+
+            // Gerar números principais
+            const numerosGerados = gerarNumerosUnicos(config.min, config.max, config.quantidade);
+
+            // Gerar trevos para +Milionária
+            let trevosGerados = [];
+            if (tipoLoteria === 'mais-milionaria') {
+                trevosGerados = gerarNumerosUnicos(
+                    config.trevos.min,
+                    config.trevos.max,
+                    config.trevos.quantidade
+                );
+            }
+
+            // Atualizar números no DOM
+            const elementoNumeros = document.getElementById(`${tipoLoteria}-numeros`);
+            if (elementoNumeros) {
+                elementoNumeros.innerHTML = numerosGerados
+                    .map(num => criarBolinha(num))
+                    .join('');
+            }
+
+            // Se for Mega-Sena, atualizar também o card da Mega da Virada
+            if (tipoLoteria === 'mega-sena') {
+                const elementoVirada = document.getElementById('mega-virada-numeros');
+                if (elementoVirada) {
+                    elementoVirada.innerHTML = numerosGerados
+                        .map(num => criarBolinha(num))
+                        .join('');
+                }
+            }
+
+            // Atualizar trevos se for +Milionária
+            if (tipoLoteria === 'mais-milionaria') {
+                const elementoTrevos = document.getElementById(`${tipoLoteria}-trevos`);
+                if (elementoTrevos) {
+                    elementoTrevos.innerHTML = trevosGerados
+                        .map(num => criarBolinha(num, 'trevo'))
+                        .join('');
+                }
+            }
+
+            // Salvar no histórico
+            salvarJogoNoHistorico(tipoLoteria, numerosGerados, trevosGerados);
+
+            return {
+                numeros: numerosGerados,
+                trevos: trevosGerados
+            };
+        }
+
+        function salvarJogoNoHistorico(tipoLoteria, numeros, trevos = []) {
+            const historico = JSON.parse(localStorage.getItem(`historico_${tipoLoteria}`) || '[]');
+            
+            const novoJogo = {
+                numeros: numeros,
+                data: new Date().toLocaleString('pt-BR'),
+                trevos: trevos
+            };
+            
+            historico.unshift(novoJogo); // Adiciona no início do array
+            
+            // Manter apenas os últimos 50 jogos
+            if (historico.length > 50) {
+                historico.pop();
+            }
+            
+            localStorage.setItem(`historico_${tipoLoteria}`, JSON.stringify(historico));
+            
+            // Atualizar a interface
+            filtrarHistorico(tipoLoteria);
+        }
+
+        function obterHistorico(tipoLoteria) {
+            return JSON.parse(localStorage.getItem(`historico_${tipoLoteria}`) || '[]');
+        }
+
+        function filtrarHistorico(tipo) {
+            const historicoDivs = document.querySelectorAll('.historico-item');
+            const tiposLoteria = [
+                'mega-sena', 'lotofacil', 'quina', 'lotomania',
+                'timemania', 'dia-de-sorte', 'super-sete',
+                'dupla-sena', 'mais-milionaria'
+            ];
+            
+            // Função auxiliar para formatar o nome da loteria
+            function formatarNomeLoteria(tipo) {
+                return tipo.split('-')
+                    .map(palavra => palavra.charAt(0).toUpperCase() + palavra.slice(1))
+                    .join(' ');
+            }
+            
+            // Limpar histórico atual
+            const historicoContainer = document.getElementById('historico-container');
+            historicoContainer.innerHTML = '';
+            
+            // Se tipo estiver vazio, mostrar todos os jogos
+            if (!tipo) {
+                let todosJogos = [];
+                tiposLoteria.forEach(tipoLoteria => {
+                    const historico = obterHistorico(tipoLoteria);
+                    historico.forEach(jogo => {
+                        todosJogos.push({
+                            tipo: tipoLoteria,
+                            ...jogo
+                        });
+                    });
+                });
+                
+                // Ordenar todos os jogos por data (mais recente primeiro)
+                todosJogos.sort((a, b) => new Date(b.data) - new Date(a.data));
+                
+                // Criar elementos para cada jogo
+                todosJogos.forEach(jogo => {
+                    const div = document.createElement('div');
+                    div.className = 'historico-item mb-3 p-3 border rounded';
+                    
+                    const tipoFormatado = formatarNomeLoteria(jogo.tipo);
+                    
+                    let html = `
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="mb-2">${tipoFormatado}</h5>
+                            <small class="text-muted">${jogo.data}</small>
+                        </div>
+                        <p class="mb-2"><strong>Números:</strong> ${jogo.numeros.join(', ')}</p>
+                    `;
+                    
+                    if (jogo.trevos) {
+                        html += `<p class="mb-0"><strong>Trevos:</strong> ${jogo.trevos.join(', ')}</p>`;
+                    }
+                    
+                    div.innerHTML = html;
+                    historicoContainer.appendChild(div);
+                });
+            } else {
+                // Mostrar apenas jogos do tipo selecionado
+                const historico = obterHistorico(tipo);
+                const tipoFormatado = formatarNomeLoteria(tipo);
+                
+                historico.forEach((jogo, index) => {
+                    const div = document.createElement('div');
+                    div.className = 'historico-item mb-3 p-3 border rounded';
+                    
+                    let html = `
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="mb-2">${tipoFormatado} #${index + 1}</h5>
+                            <small class="text-muted">${jogo.data}</small>
+                        </div>
+                        <p class="mb-2"><strong>Números:</strong> ${jogo.numeros.join(', ')}</p>
+                    `;
+                    
+                    if (jogo.trevos) {
+                        html += `<p class="mb-0"><strong>Trevos:</strong> ${jogo.trevos.join(', ')}</p>`;
+                    }
+                    
+                    div.innerHTML = html;
+                    historicoContainer.appendChild(div);
+                });
+            }
+            
+            // Atualizar contador
+            const contador = document.getElementById('historico-contador');
+            const total = historicoContainer.children.length;
+            contador.textContent = `${total} jogo${total !== 1 ? 's' : ''} encontrado${total !== 1 ? 's' : ''}`;
+        }
+        
+        // Carregar histórico ao iniciar
+        filtrarHistorico('');
+
+        // Funções de gerenciamento do histórico
+        function confirmarLimparHistorico() {
+            const confirmacao = confirm('Tem certeza que deseja limpar todo o histórico de jogos? Esta ação não pode ser desfeita.');
+            if (confirmacao) {
+                const tiposLoteria = [
+                    'mega-sena', 'lotofacil', 'quina', 'lotomania',
+                    'timemania', 'dia-de-sorte', 'super-sete',
+                    'dupla-sena', 'mais-milionaria'
+                ];
+                
+                // Limpar histórico de cada tipo de loteria
+                tiposLoteria.forEach(tipo => {
+                    localStorage.removeItem(`historico_${tipo}`);
+                });
+                
+                // Atualizar a interface
+                filtrarHistorico('');
+                
+                // Mostrar mensagem de sucesso
+                alert('Histórico limpo com sucesso!');
+            }
+        }
+
+        // Atualizar resultados ao carregar a página
+        atualizarResultados();
+        
+        // Atualizar resultados a cada 5 minutos
+        setInterval(atualizarResultados, 300000);
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <!-- Modal de Confirmação para Limpar Histórico -->
+    <div class="modal fade" id="confirmacaoLimparModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        Atenção!
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="mb-3">
+                        <strong>Tem certeza que deseja limpar todo o histórico?</strong>
+                    </p>
+                    <div class="alert alert-warning">
+                        <i class="fas fa-save me-2"></i>
+                        <strong>Importante:</strong> Recomendamos que você salve ou anote seus números antes de limpar, 
+                        pois eles serão perdidos permanentemente.
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times me-1"></i>
+                        Cancelar
+                    </button>
+                    <button type="button" class="btn btn-danger" onclick="confirmarLimparHistorico()">
+                        <i class="fas fa-trash me-1"></i>
+                        Sim, Limpar Histórico
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Funções de exportação do histórico
+        async function exportarHistoricoPDF() {
+            try {
+                const historico = document.getElementById('historico-container');
+                const canvas = await html2canvas(historico);
+                const imgData = canvas.toDataURL('image/png');
+                
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+                
+                const imgProps = doc.getImageProperties(imgData);
+                const pdfWidth = doc.internal.pageSize.getWidth();
+                const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+                
+                doc.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+                doc.save('historico-loteria.pdf');
+            } catch (error) {
+                console.error('Erro ao exportar PDF:', error);
+                alert('Erro ao gerar PDF. Por favor, tente novamente.');
+            }
+        }
+
+        async function exportarHistoricoImagem() {
+            try {
+                const historico = document.getElementById('historico-container');
+                const canvas = await html2canvas(historico);
+                
+                canvas.toBlob(function(blob) {
+                    saveAs(blob, 'historico-loteria.png');
+                });
+            } catch (error) {
+                console.error('Erro ao exportar imagem:', error);
+                alert('Erro ao gerar imagem. Por favor, tente novamente.');
+            }
+        }
+
+        async function exportarHistoricoDoc() {
+            try {
+                const tiposLoteria = [
+                    'mega-sena', 'lotofacil', 'quina', 'lotomania',
+                    'timemania', 'dia-de-sorte', 'super-sete',
+                    'dupla-sena', 'mais-milionaria'
+                ];
+                
+                let todosJogos = [];
+                tiposLoteria.forEach(tipo => {
+                    const historico = obterHistorico(tipo);
+                    historico.forEach(jogo => {
+                        todosJogos.push({
+                            tipo: tipo,
+                            ...jogo
+                        });
+                    });
+                });
+                
+                todosJogos.sort((a, b) => new Date(b.data) - new Date(a.data));
+                
+                const { Document, Paragraph, TextRun, Packer } = window.docx;
+                
+                const doc = new Document({
+                    sections: [{
+                        properties: {},
+                        children: [
+                            new Paragraph({
+                                children: [
+                                    new TextRun({
+                                        text: "Histórico de Jogos da Loteria",
+                                        bold: true,
+                                        size: 32
+                                    })
+                                ]
+                            }),
+                            ...todosJogos.flatMap(jogo => [
+                                new Paragraph({
+                                    children: [
+                                        new TextRun({
+                                            text: `${jogo.tipo.toUpperCase()} - ${jogo.data}`,
+                                            bold: true,
+                                            size: 28
+                                        })
+                                    ]
+                                }),
+                                new Paragraph({
+                                    children: [
+                                        new TextRun({
+                                            text: `Números: ${jogo.numeros.join(', ')}`,
+                                            size: 24
+                                        })
+                                    ]
+                                }),
+                                ...(jogo.trevos ? [
+                                    new Paragraph({
+                                        children: [
+                                            new TextRun({
+                                                text: `Trevos: ${jogo.trevos.join(', ')}`,
+                                                size: 24
+                                            })
+                                        ]
+                                    })
+                                ] : []),
+                                new Paragraph({
+                                    children: [new TextRun({ text: "", size: 24 })]
+                                })
+                            ])
+                        ]
+                    }]
+                });
+
+                Packer.toBlob(doc).then(blob => {
+                    saveAs(blob, 'historico-loteria.docx');
+                });
+            } catch (error) {
+                console.error('Erro ao exportar documento:', error);
+                alert('Erro ao gerar documento Word. Por favor, tente novamente.');
+            }
+        }
+
+        async function compartilharHistorico() {
+            try {
+                const tiposLoteria = [
+                    'mega-sena', 'lotofacil', 'quina', 'lotomania',
+                    'timemania', 'dia-de-sorte', 'super-sete',
+                    'dupla-sena', 'mais-milionaria'
+                ];
+                
+                let todosJogos = [];
+                tiposLoteria.forEach(tipo => {
+                    const historico = obterHistorico(tipo);
+                    historico.forEach(jogo => {
+                        todosJogos.push({
+                            tipo: tipo,
+                            ...jogo
+                        });
+                    });
+                });
+                
+                todosJogos.sort((a, b) => new Date(b.data) - new Date(a.data));
+                
+                const texto = todosJogos.map(jogo => {
+                    const tipoFormatado = jogo.tipo.split('-')
+                        .map(palavra => palavra.charAt(0).toUpperCase() + palavra.slice(1))
+                        .join(' ');
+                    
+                    let jogoTexto = `${tipoFormatado} - ${jogo.data}\n`;
+                    jogoTexto += `Números: ${jogo.numeros.join(', ')}\n`;
+                    if (jogo.trevos) {
+                        jogoTexto += `Trevos: ${jogo.trevos.join(', ')}\n`;
+                    }
+                    return jogoTexto;
+                }).join('\n\n');
+
+                if (navigator.share) {
+                    await navigator.share({
+                        title: 'Histórico de Jogos da Loteria',
+                        text: texto
+                    });
+                } else {
+                    await navigator.clipboard.writeText(texto);
+                    alert('Histórico copiado para a área de transferência!');
+                }
+            } catch (error) {
+                console.error('Erro ao compartilhar:', error);
+                alert('Não foi possível compartilhar o histórico. Tente exportar em um dos outros formatos.');
+            }
+        }
+    </script>
+    <script>
+        // Função para buscar dados atualizados da loteria
+        async function buscarDadosLoteria(tipoLoteria) {
+            try {
+                const response = await fetch(`https://loteriascaixa-api.herokuapp.com/api/${tipoLoteria}/latest`);
+                if (!response.ok) {
+                    throw new Error('Erro ao buscar dados da loteria');
+                }
+                return await response.json();
+            } catch (error) {
+                console.error('Erro:', error);
+                return null;
+            }
+        }
+
+        // Função para atualizar informações das loterias
+        async function atualizarInformacoesLoterias() {
+            const mapeamentoLoterias = {
+                'mega-sena': {
+                    nome: 'megasena',
+                    elementoConcurso: 'mega-sena-concurso',
+                    elementoData: 'mega-sena-data',
+                    elementoDias: 'mega-sena-dias'
+                },
+                'lotofacil': {
+                    nome: 'lotofacil',
+                    elementoConcurso: 'lotofacil-concurso',
+                    elementoData: 'lotofacil-data',
+                    elementoDias: 'lotofacil-dias'
+                },
+                'quina': {
+                    nome: 'quina',
+                    elementoConcurso: 'quina-concurso',
+                    elementoData: 'quina-data',
+                    elementoDias: 'quina-dias'
+                },
+                'lotomania': {
+                    nome: 'lotomania',
+                    elementoConcurso: 'lotomania-concurso',
+                    elementoData: 'lotomania-data',
+                    elementoDias: 'lotomania-dias'
+                },
+                'timemania': {
+                    nome: 'timemania',
+                    elementoConcurso: 'timemania-concurso',
+                    elementoData: 'timemania-data',
+                    elementoDias: 'timemania-dias'
+                },
+                'dia-de-sorte': {
+                    nome: 'diadesorte',
+                    elementoConcurso: 'dia-de-sorte-concurso',
+                    elementoData: 'dia-de-sorte-data',
+                    elementoDias: 'dia-de-sorte-dias'
+                },
+                'super-sete': {
+                    nome: 'supersete',
+                    elementoConcurso: 'super-sete-concurso',
+                    elementoData: 'super-sete-data',
+                    elementoDias: 'super-sete-dias'
+                },
+                'dupla-sena': {
+                    nome: 'duplasena',
+                    elementoConcurso: 'dupla-sena-concurso',
+                    elementoData: 'dupla-sena-data',
+                    elementoDias: 'dupla-sena-dias'
+                },
+                'mais-milionaria': {
+                    nome: 'maismilionaria',
+                    elementoConcurso: 'mais-milionaria-concurso',
+                    elementoData: 'mais-milionaria-data',
+                    elementoDias: 'mais-milionaria-dias'
+                }
+            };
+
+            for (const [tipo, config] of Object.entries(mapeamentoLoterias)) {
+                const dados = await buscarDadosLoteria(config.nome);
+                if (dados) {
+                    // Atualizar número do concurso
+                    const elementoConcurso = document.getElementById(config.elementoConcurso);
+                    if (elementoConcurso) {
+                        elementoConcurso.textContent = dados.concurso;
+                    }
+
+                    // Atualizar data do sorteio
+                    const elementoData = document.getElementById(config.elementoData);
+                    if (elementoData && dados.data) {
+                        const data = new Date(dados.data);
+                        elementoData.textContent = data.toLocaleDateString('pt-BR');
+                    }
+
+                    // Atualizar dias de sorteio
+                    const elementoDias = document.getElementById(config.elementoDias);
+                    if (elementoDias) {
+                        elementoDias.textContent = dados.dezenas ? dados.dezenas.join(', ') : '';
+                    }
+                }
+            }
+        }
+
+        // Atualizar informações ao carregar a página
+        document.addEventListener('DOMContentLoaded', function() {
+            atualizarInformacoesLoterias();
+        });
+
+        // Atualizar informações a cada 1 hora
+        setInterval(atualizarInformacoesLoterias, 3600000);
+    </script>
+</body>
+</html>

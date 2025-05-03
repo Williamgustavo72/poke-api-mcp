@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SorteLab: Aposte com Inteligência Artificial e Estatística na Loteria!</title>
+    <!-- Adicionar links para CSS aqui (Ex: Bootstrap, Tailwind, ou seu CSS customizado) -->
+    <style>
+        /* Estilos básicos para demonstração - Substitua por seu CSS completo */
+        body { font-family: sans-serif; line-height: 1.6; margin: 0; padding: 0; color: #333; }
+        header, section, footer { padding: 40px 20px; text-align: center; }
+        section { border-top: 1px solid #eee; }
+        h1, h2, h3 { color: #2c3e50; }
+        h1 { font-size: 2.5em; margin-bottom: 10px; }
+        h2 { font-size: 2em; margin-bottom: 20px; }
+        .cta-button {
+            display: inline-block;
+            padding: 12px 25px;
+            background-color: #27ae60; /* Verde */
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            margin-top: 20px;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1em;
+        }
+        .cta-button:hover { background-color: #2ecc71; }
+        .how-it-works-steps, .features-list, .testimonials-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            list-style: none;
+            padding: 0;
+            margin-top: 30px;
+        }
+        .how-it-works-steps li, .features-list li, .testimonials-list article {
+            flex-basis: calc(50% - 40px); /* Ajustar conforme necessário */
+            max-width: 400px; /* Limite máximo */
+            text-align: left;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+        .icon-placeholder { font-size: 2em; margin-bottom: 10px; color: #3498db; } /* Placeholder p/ Ícone */
+        .logos img { height: 40px; margin: 0 15px; vertical-align: middle; }
+        .pricing-table {
+            width: 100%;
+            max-width: 900px;
+            margin: 30px auto;
+            border-collapse: collapse;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .pricing-table th, .pricing-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: center;
+        }
+        .pricing-table th { background-color: #f2f2f2; }
+        .pricing-table .feature-col { text-align: left; font-weight: bold; }
+        .pricing-table .highlight { background-color: #e8f6f3; border: 2px solid #27ae60; } /* Destaque Premium */
+        .pricing-table .cta-button { font-size: 1em; padding: 10px 20px; }
+        .disclaimer { font-size: 0.9em; color: #777; margin-top: 15px; }
+        footer { background-color: #34495e; color: white; padding: 30px 20px; }
+        footer a { color: #ecf0f1; text-decoration: none; margin: 0 10px; }
+        footer a:hover { text-decoration: underline; }
+        footer p { margin: 10px 0 0; font-size: 0.9em; }
+        .faq-item summary { font-weight: bold; cursor: pointer; padding: 10px 0; }
+        .faq-item[open] summary { margin-bottom: 10px; }
+        .faq-item p { padding-left: 15px; border-left: 2px solid #eee; margin-left: 5px;}
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2em; }
+            h2 { font-size: 1.6em; }
+            .how-it-works-steps li, .features-list li, .testimonials-list article {
+                flex-basis: calc(100% - 40px); /* Uma coluna em telas menores */
+            }
+            .pricing-table { font-size: 0.9em;}
+            .pricing-table th, .pricing-table td { padding: 8px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 1. Seção Hero -->
+    <header style="background-color: #ecf0f1; padding-bottom: 60px;">
+        <h1>SorteLab: Aposte com Inteligência Artificial e Estatística Avançada na Loteria!</h1>
+        <p>Receba jogos otimizados, análises detalhadas e resultados diretamente no seu WhatsApp ou Telegram. Aumente suas <em>possibilidades</em> de acerto com a força dos dados!</p>
+        <!-- Placeholder para Imagem/Vídeo Hero -->
+        <img src="#" alt="Gráficos SorteLab, Números e Logos WhatsApp/Telegram" style="max-width: 100%; height: auto; margin: 20px 0; display: block; margin-left: auto; margin-right: auto; max-height: 300px; background-color: #ccc;">
+        <a href="#planos" class="cta-button">Comece a Jogar com Inteligência Agora!</a>
+    </header>
+
+    <!-- 2. Problema/Solução -->
+    <section id="problema-solucao">
+        <h2>Cansado de Apostar no Escuro?</h2>
+        <p>Jogar na loteria pode ser frustrante. Escolher números aleatoriamente, depender apenas da sorte e conferir bilhete por bilhete toma tempo e nem sempre traz os resultados esperados. E se você pudesse usar a tecnologia a seu favor?</p>
+        <h3>A Solução SorteLab:</h3>
+        <p>Apresentamos o SorteLab! Utilizamos Inteligência Artificial e métodos estatísticos avançados para analisar padrões históricos, identificar tendências e gerar jogos com maior embasamento matemático. Receba tudo de forma prática no seu celular!</p>
+    </section>
+
+    <!-- 3. Como Funciona? -->
+    <section id="como-funciona" style="background-color: #f9f9f9;">
+        <h2>Transforme Suas Apostas em 4 Passos Simples:</h2>
+        <ul class="how-it-works-steps">
+            <li>
+                <div class="icon-placeholder">[👤]</div> <!-- Ícone Cadastro -->
+                <h3>1. Cadastro Rápido</h3>
+                <p>Adicione nosso contato no WhatsApp ou Telegram e siga as instruções para se registrar.</p>
+            </li>
+            <li>
+                <div class="icon-placeholder">[⚙️]</div> <!-- Ícone Escolha/Config -->
+                <h3>2. Escolha e Personalize</h3>
+                <p>Selecione a loteria, escolha seu método de geração (aleatório, estatístico, matemático) e personalize.</p>
+            </li>
+            <li>
+                <div class="icon-placeholder">[📲]</div> <!-- Ícone Receber -->
+                <h3>3. Receba no seu App</h3>
+                <p>Nossos algoritmos geram seus jogos otimizados e enviam direto para seu WhatsApp ou Telegram.</p>
+            </li>
+            <li>
+                <div class="icon-placeholder">[📊]</div> <!-- Ícone Conferir/Analisar -->
+                <h3>4. Confira e Analise</h3>
+                <p>Receba notificações dos resultados, conferência automática e análises pós-sorteio.</p>
+            </li>
+        </ul>
+    </section>
+
+    <!-- 4. Recursos Principais -->
+    <section id="recursos">
+        <h2>Por que o SorteLab é a Sua Melhor Aposta?</h2>
+        <ul class="features-list">
+            <li>
+                <div class="icon-placeholder">[🧠]</div> <!-- Ícone Cérebro/IA -->
+                <h3>Geração Inteligente de Jogos</h3>
+                <p>Use métodos aleatórios, estatísticos (quentes/frios) e matemáticos (fechamentos, paridade) para criar jogos otimizados.</p>
+            </li>
+            <li>
+                <div class="icon-placeholder">[📈]</div> <!-- Ícone Gráfico -->
+                <h3>Análises Estatísticas Avançadas</h3>
+                <p>Acesse análises de frequência, padrões de dezenas, par/ímpar, somas e muito mais. Decida com base em dados.</p>
+            </li>
+            <li>
+                <div class="icon-placeholder">[🔔]</div> <!-- Ícone Sino/Notificação -->
+                <h3>Resultados e Notificações no Celular</h3>
+                <p>Receba resultados em tempo real, conferência automática dos seus jogos e alertas de acumulados.</p>
+            </li>
+            <li>
+                <div class="icon-placeholder">[👥]</div> <!-- Ícone Pessoas/Grupo -->
+                <h3>Sistema de Bolões Simplificado</h3>
+                <p>Crie ou participe de bolões facilmente. Ajudamos na divisão inteligente dos jogos e gestão das cotas.</p>
+            </li>
+             <li>
+                <div class="icon-placeholder">[💬]</div> <!-- Ícone Chat -->
+                <h3>Conveniência Total</h3>
+                <p>Toda a inteligência do SorteLab na palma da sua mão, através do WhatsApp ou Telegram.</p>
+            </li>
+        </ul>
+    </section>
+
+     <!-- 5. Loterias Suportadas -->
+    <section id="loterias" style="background-color: #f9f9f9;">
+        <h2>Suas Loterias Favoritas Estão Aqui!</h2>
+        <p>Comece a otimizar suas apostas na: <strong>Mega-Sena</strong>, <strong>Lotofácil</strong> e <strong>Quina</strong>.</p>
+        <p><em>(Em breve adicionaremos mais modalidades!)</em></p>
+    </section>
+
+    <!-- 6. Acesso Fácil (WhatsApp/Telegram) -->
+    <section id="acesso-facil">
+        <h2>Sua Lotérica Inteligente no Bolso</h2>
+        <p>Esqueça aplicativos complicados. Interaja com o SorteLab de forma natural e intuitiva diretamente pelo WhatsApp ou Telegram. Peça jogos, consulte análises e receba resultados com simples comandos.</p>
+        <div class="logos">
+            <!-- Placeholders para Logos -->
+            <img src="#" alt="WhatsApp Logo" style="height: 50px; background-color: #ccc; display: inline-block; margin: 10px;">
+            <img src="#" alt="Telegram Logo" style="height: 50px; background-color: #ccc; display: inline-block; margin: 10px;">
+        </div>
+    </section>
+
+    <!-- 7. Prova Social (Depoimentos) -->
+    <section id="depoimentos" style="background-color: #f0f9ff;">
+        <h2>O que Nossos Usuários Dizem:</h2>
+        <div class="testimonials-list">
+            <article>
+                <!-- Placeholder Imagem Usuário -->
+                <img src="#" alt="Foto Carlos M." style="width: 60px; height: 60px; border-radius: 50%; background-color: #bbb; display: block; margin: 0 auto 10px;">
+                <p>"O SorteLab mudou minha forma de jogar! As análises são incríveis e a praticidade de receber tudo no WhatsApp é demais."</p>
+                <em>- Carlos M., Usuário Premium</em>
+            </article>
+            <article>
+                <!-- Placeholder Imagem Usuário -->
+                <img src="#" alt="Foto Ana P." style="width: 60px; height: 60px; border-radius: 50%; background-color: #bbb; display: block; margin: 0 auto 10px;">
+                <p>"Finalmente entendi os padrões da Lotofácil. Os fechamentos matemáticos me ajudaram a organizar melhor meus bolões."</p>
+                <em>- Ana P., Usuária Anual</em>
+            </article>
+            <article>
+                 <!-- Placeholder Imagem Usuário -->
+                <img src="#" alt="Foto Fernando L." style="width: 60px; height: 60px; border-radius: 50%; background-color: #bbb; display: block; margin: 0 auto 10px;">
+                <p>"Receber a conferência automática me poupa um tempo enorme. Recomendo!"</p>
+                <em>- Fernando L., Usuário Básico</em>
+            </article>
+        </div>
+    </section>
+
+    <!-- 8. Planos e Preços -->
+    <section id="planos">
+        <h2>Escolha o Plano Ideal para Sua Estratégia</h2>
+        <table class="pricing-table">
+            <thead>
+                <tr>
+                    <th class="feature-col">Recurso</th>
+                    <th>Plano Básico</th>
+                    <th class="highlight">Plano Premium</th> <!-- Destaque -->
+                    <th>Plano Anual</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="feature-col">Geração de Jogos</td>
+                    <td>10 semanais</td>
+                    <td class="highlight">Ilimitada</td>
+                    <td>Ilimitada</td>
+                </tr>
+                <tr>
+                    <td class="feature-col">Loterias Disponíveis</td>
+                    <td>1 à escolha</td>
+                    <td class="highlight">Todas</td>
+                    <td>Todas</td>
+                </tr>
+                <tr>
+                    <td class="feature-col">Análise Estatística</td>
+                    <td>Básica</td>
+                    <td class="highlight">Avançada</td>
+                    <td>Avançada</td>
+                </tr>
+                 <tr>
+                    <td class="feature-col">Métodos de Geração</td>
+                    <td>Aleatório</td>
+                    <td class="highlight">Todos</td>
+                    <td>Todos</td>
+                </tr>
+                <tr>
+                    <td class="feature-col">Fechamentos Matemáticos</td>
+                    <td>-</td>
+                    <td class="highlight">✓</td>
+                    <td>✓</td>
+                </tr>
+                <tr>
+                    <td class="feature-col">Sistema de Bolões</td>
+                    <td>-</td>
+                    <td class="highlight">✓</td>
+                    <td>✓</td>
+                </tr>
+                <tr>
+                    <td class="feature-col">Notificações de Resultados</td>
+                    <td>✓</td>
+                    <td class="highlight">✓</td>
+                    <td>✓</td>
+                </tr>
+                <tr>
+                    <td class="feature-col">Conferência Automática</td>
+                    <td>-</td>
+                    <td class="highlight">✓</td>
+                    <td>✓</td>
+                </tr>
+                 <tr>
+                    <td class="feature-col">Acesso WhatsApp/Telegram</td>
+                    <td>1 Plataforma</td>
+                    <td class="highlight">Ambas</td>
+                    <td>Ambas</td>
+                </tr>
+                 <tr>
+                    <td class="feature-col">Suporte</td>
+                    <td>Padrão</td>
+                    <td class="highlight">Prioritário</td>
+                    <td>Prioritário + VIP</td>
+                </tr>
+                 <tr>
+                    <td class="feature-col">Benefício Extra</td>
+                    <td>-</td>
+                    <td class="highlight">-</td>
+                    <td><strong>2 Meses Grátis + Webinars</strong></td>
+                </tr>
+                <tr>
+                    <td class="feature-col"><strong>Preço</strong></td>
+                    <td><strong>R$29,90/mês</strong></td>
+                    <td class="highlight"><strong>R$59,90/mês</strong></td>
+                    <td><strong>R$499,90/ano</strong><br>(Equivale a R$41,66/mês)</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><a href="#" class="cta-button" style="background-color: #bdc3c7;">Assinar Básico</a></td>
+                    <td class="highlight"><a href="#" class="cta-button">Assinar Premium</a></td>
+                    <td><a href="#" class="cta-button" style="background-color: #f39c12;">Assinar Anual</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <!-- 9. Chamada Final para Ação -->
+    <section id="cta-final" style="background-color: #e8f6f3;">
+        <h2>Pronto para Transformar Suas Apostas?</h2>
+        <p>Deixe a sorte encontrar você no meio do caminho com estratégia e dados. Junte-se a milhares de apostadores que estão usando a inteligência artificial e a estatística para otimizar seus jogos.</p>
+        <p class="disclaimer"><strong>Importante:</strong> O SorteLab é uma ferramenta de análise e geração de jogos baseada em estatísticas e matemática. Não garantimos prêmios, mas buscamos aumentar suas <em>possibilidades</em> através de uma abordagem mais informada. Jogue com responsabilidade.</p>
+        <a href="#planos" class="cta-button">Quero Aumentar Minhas Possibilidades Agora!</a>
+    </section>
+
+    <!-- 10. FAQ -->
+    <section id="faq">
+        <h2>Ainda Tem Dúvidas? Perguntas Frequentes</h2>
+        <div style="max-width: 800px; margin: 0 auto; text-align: left;">
+            <details class="faq-item">
+                <summary>O SorteLab garante que vou ganhar na loteria?</summary>
+                <p>Não. Nenhuma ferramenta pode garantir prêmios em jogos de azar. O SorteLab utiliza dados e estatísticas para gerar jogos e análises que podem *aumentar suas possibilidades* e oferecer uma abordagem mais estratégica do que a escolha puramente aleatória. Jogue sempre com responsabilidade.</p>
+            </details>
+            <details class="faq-item">
+                <summary>Como funciona a IA do SorteLab?</summary>
+                <p>Nossa IA analisa um vasto histórico de resultados para identificar padrões, frequências de números (quentes/frios), combinações recorrentes e outras métricas estatísticas. Esses dados alimentam nossos algoritmos de geração de jogos.</p>
+            </details>
+             <details class="faq-item">
+                <summary>É seguro usar o SorteLab e fornecer meus dados?</summary>
+                <p>Sim. Utilizamos as APIs oficiais do WhatsApp Business e Telegram, e seguimos rigorosas políticas de privacidade (adicione link aqui). Seus dados de pagamento são processados por gateways seguros como MercadoPago, PagSeguro ou Stripe.</p>
+            </details>
+             <details class="faq-item">
+                <summary>Posso cancelar minha assinatura a qualquer momento?</summary>
+                <p>Sim. Você pode gerenciar ou cancelar sua assinatura facilmente através do portal do cliente ou entrando em contato com nosso suporte.</p>
+            </details>
+             <details class="faq-item">
+                <summary>Como recebo os jogos e análises?</summary>
+                <p>Tudo é entregue diretamente na sua conversa do WhatsApp ou Telegram, de forma organizada e fácil de visualizar.</p>
+            </details>
+        </div>
+    </section>
+
+    <!-- 11. Rodapé -->
+    <footer>
+        <!-- Placeholder Logo SorteLab -->
+        <div style="font-size: 1.5em; font-weight: bold; margin-bottom: 15px;">SorteLab</div>
+        <p>
+            <a href="#">Termos de Serviço</a> |
+            <a href="#">Política de Privacidade</a> |
+            <a href="#">Contato</a>
+        </p>
+        <p>© 2024 SorteLab - Todos os direitos reservados.</p>
+        <p class="disclaimer" style="color: #bdc3c7; margin-top: 20px;">Aviso Legal: Loterias são jogos de azar. Aposte com responsabilidade. Serviço destinado a maiores de 18 anos. O SorteLab não tem vínculo com a Caixa Econômica Federal.</p>
+    </footer>
+
+</body>
+</html>

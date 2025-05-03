@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="SorteLab: Aposte com Inteligência Artificial e Estatística Avançada na Loteria! Receba jogos otimizados, análises e resultados diretamente no WhatsApp ou Telegram.">
+    <meta name="keywords" content="loteria, Mega-Sena, Lotofácil, Quina, estatística loteria, jogos lotéricos, aumentar chances loteria, números da sorte">
+    <title>SorteLab - Aposte com Inteligência</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --color-primary: #0B3C8D;
+            --color-primary-dark: #082a64;
+            --color-secondary: #00A67E;
+            --color-accent: #FDBE34;
+            --color-error: #DC2626;
+            --color-success: #10B981;
+            --color-warning: #F59E0B;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            color: #1F2937;
+            line-height: 1.5;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Montserrat', sans-serif;
+            line-height: 1.2;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* Header Styles */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--color-primary);
+        }
+
+        .nav-links {
+            display: none;
+        }
+
+        @media (min-width: 768px) {
+            .nav-links {
+                display: flex;
+                gap: 2rem;
+            }
+        }
+
+        .nav-link {
+            color: #4B5563;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .nav-link:hover {
+            color: var(--color-primary);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: var(--color-primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--color-primary-dark);
+            transform: translateY(-1px);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 8rem 0 4rem;
+            background: linear-gradient(135deg, #f0f7ff 0%, #e6fff9 100%);
+        }
+
+        .hero-content {
+            display: grid;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        @media (min-width: 768px) {
+            .hero-content {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .hero-title {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        @media (min-width: 768px) {
+            .hero-title {
+                font-size: 3.5rem;
+            }
+        }
+
+        .hero-text {
+            font-size: 1.25rem;
+            color: #4B5563;
+            margin-bottom: 2rem;
+        }
+
+        .hero-image {
+            position: relative;
+        }
+
+        .hero-image img {
+            width: 100%;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        /* Features Section */
+        .features {
+            padding: 4rem 0;
+            background: white;
+        }
+
+        .features-grid {
+            display: grid;
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        @media (min-width: 768px) {
+            .features-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .feature-card {
+            padding: 2rem;
+            background: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+        }
+
+        /* Pricing Section */
+        .pricing {
+            padding: 4rem 0;
+            background: #f9fafb;
+        }
+
+        .pricing-grid {
+            display: grid;
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        @media (min-width: 768px) {
+            .pricing-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .pricing-card {
+            background: white;
+            border-radius: 0.5rem;
+            padding: 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .pricing-card.popular {
+            border: 2px solid var(--color-primary);
+            transform: scale(1.05);
+        }
+
+        /* Footer */
+        .footer {
+            background: #1F2937;
+            color: white;
+            padding: 4rem 0 2rem;
+        }
+
+        .footer-grid {
+            display: grid;
+            gap: 2rem;
+        }
+
+        @media (min-width: 768px) {
+            .footer-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        .footer-link {
+            color: #9CA3AF;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-link:hover {
+            color: white;
+        }
+
+        /* Utilities */
+        .text-center { text-align: center; }
+        .mb-4 { margin-bottom: 1rem; }
+        .mb-8 { margin-bottom: 2rem; }
+        .mt-8 { margin-top: 2rem; }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav container">
+            <a href="#" class="logo">
+                <i data-lucide="brain" class="mr-2"></i>
+                SorteLab
+            </a>
+            <div class="nav-links">
+                <a href="#como-funciona" class="nav-link">Como Funciona</a>
+                <a href="#recursos" class="nav-link">Recursos</a>
+                <a href="#loterias" class="nav-link">Loterias</a>
+                <a href="#precos" class="nav-link">Preços</a>
+                <a href="#faq" class="nav-link">FAQ</a>
+            </div>
+            <a href="#precos" class="btn btn-primary">Assinar Agora</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <div>
+                        <h1 class="hero-title">
+                            <span style="color: var(--color-primary)">SorteLab:</span> Aposte com Inteligência Artificial!
+                        </h1>
+                        <p class="hero-text">
+                            Receba jogos otimizados, análises detalhadas e resultados diretamente no seu 
+                            WhatsApp ou Telegram. Aumente suas possibilidades de acerto com a força dos dados!
+                        </p>
+                        <div class="hero-buttons">
+                            <a href="#precos" class="btn btn-primary">
+                                <i data-lucide="zap" class="mr-2"></i>
+                                Comece a Jogar com Inteligência
+                            </a>
+                        </div>
+                    </div>
+                    <div class="hero-image">
+                        <img src="https://images.pexels.com/photos/7821620/pexels-photo-7821620.jpeg" 
+                             alt="Análise estatística de loteria no SorteLab">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="recursos" class="features">
+            <div class="container">
+                <h2 class="text-center mb-8">Por que o SorteLab é a Sua Melhor Aposta?</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <i data-lucide="brain" class="mb-4"></i>
+                        <h3 class="mb-4">Geração Inteligente de Jogos</h3>
+                        <p>Nossos algoritmos usam métodos aleatórios e estatísticos para criar jogos otimizados.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i data-lucide="bar-chart-2" class="mb-4"></i>
+                        <h3 class="mb-4">Análises Estatísticas</h3>
+                        <p>Acesse análises de frequência, padrões e muito mais para tomar decisões informadas.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i data-lucide="bell" class="mb-4"></i>
+                        <h3 class="mb-4">Notificações em Tempo Real</h3>
+                        <p>Receba resultados e conferência automática diretamente no seu celular.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="precos" class="pricing">
+            <div class="container">
+                <h2 class="text-center mb-8">Escolha o Plano Ideal para Sua Estratégia</h2>
+                <div class="pricing-grid">
+                    <div class="pricing-card">
+                        <h3>Plano Básico</h3>
+                        <div class="price mt-8 mb-8">
+                            <span class="text-3xl font-bold">R$29,90</span>/mês
+                        </div>
+                        <ul class="mb-8">
+                            <li>10 jogos semanais</li>
+                            <li>1 loteria à escolha</li>
+                            <li>Análise estatística básica</li>
+                            <li>Notificações de resultados</li>
+                        </ul>
+                        <a href="#" class="btn btn-primary">Assinar Básico</a>
+                    </div>
+                    <div class="pricing-card popular">
+                        <div class="popular-tag">Mais Popular</div>
+                        <h3>Plano Premium</h3>
+                        <div class="price mt-8 mb-8">
+                            <span class="text-3xl font-bold">R$59,90</span>/mês
+                        </div>
+                        <ul class="mb-8">
+                            <li>Jogos ilimitados</li>
+                            <li>Todas as loterias</li>
+                            <li>Análise estatística avançada</li>
+                            <li>Sistema de bolões</li>
+                        </ul>
+                        <a href="#" class="btn btn-primary">Assinar Premium</a>
+                    </div>
+                    <div class="pricing-card">
+                        <h3>Plano Anual</h3>
+                        <div class="price mt-8 mb-8">
+                            <span class="text-3xl font-bold">R$499,90</span>/ano
+                        </div>
+                        <ul class="mb-8">
+                            <li>Todos os benefícios Premium</li>
+                            <li>2 meses grátis</li>
+                            <li>Webinars exclusivos</li>
+                            <li>Suporte VIP</li>
+                        </ul>
+                        <a href="#" class="btn btn-primary">Assinar Anual</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <h4 class="mb-4">SorteLab</h4>
+                    <p>Transformando a forma como as pessoas apostam na loteria.</p>
+                </div>
+                <div>
+                    <h4 class="mb-4">Loterias</h4>
+                    <ul>
+                        <li><a href="#" class="footer-link">Mega-Sena</a></li>
+                        <li><a href="#" class="footer-link">Lotofácil</a></li>
+                        <li><a href="#" class="footer-link">Quina</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="mb-4">Links Úteis</h4>
+                    <ul>
+                        <li><a href="#" class="footer-link">Sobre Nós</a></li>
+                        <li><a href="#" class="footer-link">Como Funciona</a></li>
+                        <li><a href="#" class="footer-link">FAQ</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="mb-4">Contato</h4>
+                    <p>contato@sortelab.com.br</p>
+                    <p>(11) 99999-9999</p>
+                </div>
+            </div>
+            <div class="text-center mt-8">
+                <p>&copy; 2024 SorteLab - Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Header scroll effect
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('.header');
+            if (window.scrollY > 10) {
+                header.style.boxShadow = '0 2px 4px rgba(0,0,0,0.1)';
+            } else {
+                header.style.boxShadow = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
