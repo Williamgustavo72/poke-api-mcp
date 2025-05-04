@@ -56,6 +56,7 @@ def obter_ultimo_concurso(loteria: str):
             numero = dados.get('numero')
             data_apuracao = dados.get('dataApuracao')
             dezenas = dados.get('dezenasSorteadasOrdemSorteio')
+            dezenas = sorted(dezenas)
             houve_ganhadores = False
             lista_rateio = dados.get('listaRateioPremio')
             if lista_rateio and isinstance(lista_rateio, list) and len(lista_rateio) > 0:
