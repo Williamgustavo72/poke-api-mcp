@@ -1,0 +1,1 @@
+// script.js - scripts principais da landing page 
