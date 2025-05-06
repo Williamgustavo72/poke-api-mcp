@@ -1,8 +1,8 @@
-# Especificação Detalhada do Projeto SorteLab
+# Especificação Detalhada do Projeto Sorte Premiada
 
 ## 1. Visão Geral
 
-O SorteLab é uma aplicação inovadora que utiliza inteligência artificial e estatística avançada para gerar jogos de loteria e fornecer análises probabilísticas para os usuários. A plataforma oferece acesso via WhatsApp e Telegram, permitindo que os usuários recebam jogos gerados, resultados e análises diretamente em seus smartphones.
+O Sorte Premiada é uma aplicação inovadora que utiliza inteligência artificial e estatística avançada para gerar jogos de loteria e fornecer análises probabilísticas para os usuários. A plataforma oferece acesso via WhatsApp e Telegram, permitindo que os usuários recebam jogos gerados, resultados e análises diretamente em seus smartphones.
 
 ## 2. Objetivos do Projeto
 
