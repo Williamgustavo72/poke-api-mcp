@@ -15,6 +15,7 @@ RUN uv sync --frozen --no-cache
 COPY src ./src
 
 #EXPOSE 8950
+EXPOSE 8900
 
 WORKDIR /app/src
 

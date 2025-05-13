@@ -54,40 +54,29 @@ async def gerar_jogos_lotofacil(quantidade_jogos: int) -> list[types.TextContent
     return [types.TextContent(type="text", text=str(jogos))]
 
 @mcp.tool()
-async def resultado_megasena(concurso: int) -> list[types.TextContent]:
-    """Obtém o resultado de um concurso da Mega-Sena.
+async def gerar_jogos_quina(quantidade_jogos: int) -> list[types.TextContent]:
+    """Gera jogos aleatórios para a Quina.
 
     Args:
-        concurso: Número do concurso desejado.
+        quantidade_jogos: Quantidade de jogos a serem gerados.
     Returns:
-        Resultado do concurso, incluindo dezenas sorteadas.
+        Lista de jogos gerados, cada um como uma string.
     """
-    resultado = get_resultado("mega-sena", concurso)
-    return [types.TextContent(type="text", text=str(resultado))]
+    jogos = loteria.gerar_jogos('quina', quantidade_jogos)
+    return [types.TextContent(type="text", text=str(jogos))]
 
 @mcp.tool()
-async def resultado_lotofacil(concurso: int) -> list[types.TextContent]:
-    """Obtém o resultado de um concurso da Lotofácil.
+async def gerar_jogos_lotomania(quantidade_jogos: int) -> list[types.TextContent]:
+    """Gera jogos aleatórios para a Lotomania.
 
     Args:
-        concurso: Número do concurso desejado.
+        quantidade_jogos: Quantidade de jogos a serem gerados.
     Returns:
-        Resultado do concurso, incluindo dezenas sorteadas.
+        Lista de jogos gerados, cada um como uma string.
     """
-    resultado = get_resultado("lotofacil", concurso)
-    return [types.TextContent(type="text", text=str(resultado))]
+    jogos = loteria.gerar_jogos('lotomania', quantidade_jogos)
+    return [types.TextContent(type="text", text=str(jogos))]
 
-@mcp.tool()
-async def obter_ultimo_concurso_loteria(loteria: str) -> list[types.TextContent]:
-    """Obtém informações do último concurso de uma loteria específica.
-
-    Args:
-        loteria: Nome da loteria (ex: 'mega-sena', 'lotofacil', 'quina', etc).
-    Returns:
-        Dicionário com número do concurso, data de apuração, dezenas sorteadas e se houve ganhadores.
-    """
-    resultado = obter_ultimo_concurso(loteria)
-    return [types.TextContent(type="text", text=str(resultado))]
 
 async def main():
     
