@@ -1,0 +1,1874 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sorte Premiada - Geração Inteligente de Jogos de Loteria</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary-color: #1a6cb9;
+            --secondary-color: #4da6ff;
+            --dark-blue: #0e4e8a;
+            --light-blue: #8fc6f4;
+            --dark-accent: #1a3c6e;
+            --light-accent: #c4e0ff;
+            --dark-gray: #333;
+            --medium-gray: #666;
+            --light-gray: #f5f5f5;
+            --white: #fff;
+            --transition: all 0.3s ease;
+            --box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            --border-radius: 8px;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            line-height: 1.6;
+            color: var(--dark-gray);
+            background-color: var(--white);
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--dark-blue);
+        }
+        
+        a {
+            text-decoration: none;
+            color: var(--primary-color);
+            transition: var(--transition);
+        }
+        
+        a:hover {
+            color: var(--dark-green);
+        }
+        
+        p {
+            margin-bottom: 1rem;
+        }
+        
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: var(--primary-color);
+            color: var(--white);
+            border: none;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+        }
+        
+        .btn:hover {
+            background-color: var(--dark-green);
+            color: var(--white);
+            transform: translateY(-3px);
+            box-shadow: var(--box-shadow);
+        }
+        
+        .btn-secondary {
+            background-color: var(--secondary-color);
+        }
+        
+        .btn-secondary:hover {
+            background-color: var(--dark-accent);
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+        
+        .btn-outline:hover {
+            background-color: var(--primary-color);
+            color: var(--white);
+        }
+        
+        .section {
+            padding: 80px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+            font-size: 2.5rem;
+            position: relative;
+        }
+        
+        .section-title:after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background-color: var(--secondary-color);
+            margin: 15px auto 0;
+            border-radius: 2px;
+        }
+        
+        .text-center {
+            text-align: center;
+        }
+        
+        /* Header and Navigation */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background-color: var(--white);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 15px 0;
+            transition: var(--transition);
+        }
+        
+        .header.sticky {
+            padding: 10px 0;
+            background-color: var(--white);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        
+        .logo i {
+            color: var(--secondary-color);
+            margin-right: 10px;
+            font-size: 1.8rem;
+        }
+        
+        .nav-menu {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-menu li {
+            margin-left: 25px;
+        }
+        
+        .nav-menu a {
+            color: var(--dark-gray);
+            font-weight: 500;
+            transition: var(--transition);
+        }
+        
+        .nav-menu a:hover {
+            color: var(--primary-color);
+        }
+        
+        .nav-menu a.active {
+            color: var(--primary-color);
+            position: relative;
+        }
+        
+        .nav-menu a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--primary-color);
+        }
+        
+        .nav-toggle {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--dark-gray);
+        }
+        
+        /* Hero Section */
+        .hero {
+            padding: 160px 0 100px;
+            background: linear-gradient(135deg, var(--light-blue) 0%, var(--primary-color) 100%);
+            color: var(--white);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%23ffffff' fill-opacity='0.05' d='M0,288L48,272C96,256,192,224,288,197.3C384,171,480,149,576,165.3C672,181,768,235,864,250.7C960,267,1056,245,1152,208C1248,171,1344,117,1392,90.7L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E");
+            background-size: cover;
+            background-position: center;
+            opacity: 0.3;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .hero-text {
+            flex: 1;
+            max-width: 600px;
+            margin-right: 40px;
+        }
+        
+        .hero-title {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+            color: var(--white);
+        }
+        
+        .hero-subtitle {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            color: var(--light-gray);
+        }
+        
+        .hero-image {
+            flex: 1;
+            max-width: 500px;
+            position: relative;
+        }
+        
+        .hero-image img {
+            border-radius: var(--border-radius);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            transform: perspective(1000px) rotateY(-5deg);
+            transition: var(--transition);
+        }
+        
+        .hero-image img:hover {
+            transform: perspective(1000px) rotateY(0);
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 2rem;
+        }
+        
+        .hero-btn {
+            padding: 14px 32px;
+            font-size: 1.1rem;
+        }
+        
+        /* Features Section */
+        .features {
+            background-color: var(--white);
+        }
+        
+        .features-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+        
+        .feature-box {
+            padding: 30px;
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+            text-align: center;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .feature-box:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+            display: inline-block;
+            position: relative;
+        }
+        
+        .feature-icon::after {
+            content: '';
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background-color: var(--light-blue);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: -1;
+            opacity: 0.2;
+        }
+        
+        .feature-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--dark-blue);
+        }
+        
+        /* How It Works Section */
+        .how-it-works {
+            background-color: var(--light-gray);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .how-it-works::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%231a6cb9' fill-opacity='0.05'%3E%3Cpath opacity='.5' d='M96 95h4v1h-4v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9zm-1 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+        
+        .steps-container {
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .step {
+            display: flex;
+            margin-bottom: 60px;
+            position: relative;
+        }
+        
+        .step:last-child {
+            margin-bottom: 0;
+        }
+        
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background-color: var(--primary-color);
+            border-radius: 50%;
+            color: var(--white);
+            font-size: 1.5rem;
+            font-weight: 700;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 30px;
+            flex-shrink: 0;
+            box-shadow: 0 5px 15px rgba(26, 108, 185, 0.3);
+        }
+        
+        .step-content {
+            flex: 1;
+        }
+        
+        .step-title {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .step-desc {
+            font-size: 1.1rem;
+            color: var(--medium-gray);
+        }
+        
+        .step-image {
+            flex: 1;
+            max-width: 400px;
+            margin-left: 30px;
+            overflow: hidden;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+        
+        .step-image img {
+            transition: var(--transition);
+        }
+        
+        .step-image:hover img {
+            transform: scale(1.05);
+        }
+        
+        /* Stats Section */
+        .stats {
+            background: linear-gradient(135deg, var(--dark-blue) 0%, var(--primary-color) 100%);
+            color: var(--white);
+            padding: 60px 0;
+        }
+        
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            text-align: center;
+        }
+        
+        .stat-item {
+            padding: 20px;
+        }
+        
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--light-accent);
+        }
+        
+        .stat-label {
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+        
+        /* Analysis Section */
+        .analysis {
+            background-color: var(--white);
+        }
+        
+        .analysis-content {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 50px;
+        }
+        
+        .analysis-text {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .analysis-title {
+            font-size: 2.2rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .analysis-list {
+            list-style: none;
+            margin-top: 1.5rem;
+        }
+        
+        .analysis-list li {
+            margin-bottom: 15px;
+            padding-left: 30px;
+            position: relative;
+            font-size: 1.1rem;
+        }
+        
+        .analysis-list li:before {
+            content: '\f058';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            color: var(--primary-color);
+            position: absolute;
+            left: 0;
+            top: 2px;
+        }
+        
+        .analysis-image {
+            flex: 1;
+            min-width: 300px;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--box-shadow);
+            position: relative;
+        }
+        
+        .analysis-image img {
+            transition: var(--transition);
+        }
+        
+        .analysis-image:hover img {
+            transform: scale(1.05);
+        }
+        
+        /* Pricing Section */
+        .pricing {
+            background-color: var(--light-gray);
+        }
+        
+        .pricing-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .pricing-plan {
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 40px;
+            text-align: center;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .pricing-plan:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .pricing-popular {
+            position: absolute;
+            top: 20px;
+            right: -30px;
+            background-color: var(--secondary-color);
+            color: var(--white);
+            padding: 5px 30px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transform: rotate(45deg);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .pricing-header {
+            margin-bottom: 30px;
+        }
+        
+        .pricing-title {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .pricing-price {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        .pricing-period {
+            font-size: 1rem;
+            color: var(--medium-gray);
+        }
+        
+        .pricing-features {
+            margin-bottom: 30px;
+            list-style: none;
+        }
+        
+        .pricing-features li {
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .pricing-features li:last-child {
+            border-bottom: none;
+        }
+        
+        .pricing-btn {
+            width: 100%;
+        }
+        
+        /* Premium plan with different color */
+        .pricing-plan.premium {
+            border-top: 5px solid var(--secondary-color);
+            transform: scale(1.05);
+        }
+        
+        .pricing-plan.premium:hover {
+            transform: scale(1.05) translateY(-10px);
+        }
+        
+        .pricing-plan.premium .pricing-price {
+            color: var(--secondary-color);
+        }
+        
+        /* Testimonials Section */
+        .testimonials {
+            background-color: var(--white);
+        }
+        
+        .testimonials-container {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .testimonial-slide {
+            display: none;
+            text-align: center;
+            padding: 0 20px;
+        }
+        
+        .testimonial-slide.active {
+            display: block;
+            animation: fadeIn 0.8s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .testimonial-text {
+            font-size: 1.2rem;
+            font-style: italic;
+            margin-bottom: 2rem;
+            position: relative;
+            padding: 20px 40px;
+        }
+        
+        .testimonial-text::before,
+        .testimonial-text::after {
+            content: '\f10d';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            font-size: 1.5rem;
+            color: var(--light-green);
+            position: absolute;
+        }
+        
+        .testimonial-text::before {
+            top: 0;
+            left: 0;
+        }
+        
+        .testimonial-text::after {
+            content: '\f10e';
+            bottom: 0;
+            right: 0;
+        }
+        
+        .testimonial-author {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--dark-green);
+            margin-bottom: 5px;
+        }
+        
+        .testimonial-role {
+            color: var(--medium-gray);
+            font-size: 0.9rem;
+        }
+        
+        .testimonial-indicators {
+            display: flex;
+            justify-content: center;
+            margin-top: 40px;
+        }
+        
+        .testimonial-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: var(--light-green);
+            margin: 0 5px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .testimonial-dot.active {
+            background-color: var(--primary-color);
+            transform: scale(1.3);
+        }
+        
+        /* FAQ Section */
+        .faq {
+            background-color: var(--light-gray);
+        }
+        
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .faq-item {
+            margin-bottom: 20px;
+            border-radius: var(--border-radius);
+            background-color: var(--white);
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+        }
+        
+        .faq-question {
+            padding: 20px;
+            background-color: var(--white);
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: var(--transition);
+        }
+        
+        .faq-question:hover {
+            color: var(--primary-color);
+        }
+        
+        .faq-question i {
+            color: var(--primary-color);
+            transition: var(--transition);
+        }
+        
+        .faq-answer {
+            padding: 0 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        
+        .faq-answer-content {
+            padding-bottom: 20px;
+        }
+        
+        .faq-item.active .faq-question {
+            color: var(--primary-color);
+        }
+        
+        .faq-item.active .faq-question i {
+            transform: rotate(-180deg);
+        }
+        
+        .faq-item.active .faq-answer {
+            max-height: 1000px;
+        }
+        
+        /* CTA Section */
+        .cta {
+            background: linear-gradient(135deg, var(--light-blue) 0%, var(--primary-color) 100%);
+            color: var(--white);
+            position: relative;
+            padding: 80px 0;
+            text-align: center;
+            overflow: hidden;
+        }
+        
+        .cta::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='M0 38.59l2.83-2.83 1.41 1.41L1.41 40H0v-1.41zM0 20.83l2.83-2.83 1.41 1.41L1.41 22.24H0v-1.41zM0 3.07l2.83-2.83 1.41 1.41L1.41 4.48H0V3.07zM17.76 40l2.83-2.83 1.41 1.41L19.17 40h-1.41zM17.76 22.24l2.83-2.83 1.41 1.41L19.17 22.24h-1.41zM17.76 4.48l2.83-2.83 1.41 1.41L19.17 4.48h-1.41zM35.52 40l2.83-2.83 1.41 1.41L37.93 40h-2.41zM35.52 22.24l2.83-2.83 1.41 1.41L37.93 22.24h-2.41zM35.52 4.48l2.83-2.83 1.41 1.41L37.93 4.48h-2.41zM1.41 40l2.83-2.83 1.41 1.41L2.83 40H1.41zM1.41 22.24l2.83-2.83 1.41 1.41L2.83 22.24H1.41zM1.41 4.48l2.83-2.83 1.41 1.41L2.83 4.48H1.41zM19.17 40l2.83-2.83 1.41 1.41L20.59 40h-1.42zM19.17 22.24l2.83-2.83 1.41 1.41L20.59 22.24h-1.42zM19.17 4.48l2.83-2.83 1.41 1.41L20.59 4.48h-1.42zM36.93 40l2.83-2.83 1.41 1.41L38.34 40h-1.41zM36.93 22.24l2.83-2.83 1.41 1.41L38.34 22.24h-1.41zM36.93 4.48l2.83-2.83 1.41 1.41L38.34 4.48h-1.41z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.2;
+        }
+        
+        .cta-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .cta-title {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--white);
+        }
+        
+        .cta-description {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            color: var(--white);
+            opacity: 0.9;
+        }
+        
+        .cta-btn {
+            background-color: var(--white);
+            color: var(--primary-color);
+            font-size: 1.1rem;
+            padding: 15px 40px;
+            border-radius: 30px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: none;
+            font-weight: 700;
+            display: inline-block;
+            text-decoration: none;
+        }
+        
+        .cta-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            color: var(--dark-blue);
+        }
+        
+        .contact-form-container {
+            flex: 1;
+            min-width: 300px;
+            padding: 30px;
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            margin-right: 30px;
+        }
+        
+        .contact-info {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .contact-title {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(26, 155, 69, 0.1);
+        }
+        
+        textarea.form-control {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .contact-info-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 25px;
+        }
+        
+        .contact-info-icon {
+            width: 50px;
+            height: 50px;
+            background-color: var(--light-green);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 20px;
+            flex-shrink: 0;
+        }
+        
+        .contact-info-icon i {
+            font-size: 1.2rem;
+            color: var(--primary-color);
+        }
+        
+        .contact-info-text h4 {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+        
+        .contact-info-text p {
+            color: var(--medium-gray);
+            margin-bottom: 0;
+        }
+        
+        .social-links {
+            display: flex;
+            margin-top: 30px;
+        }
+        
+        .social-link {
+            width: 40px;
+            height: 40px;
+            background-color: var(--light-blue);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 10px;
+            color: var(--primary-color);
+            transition: var(--transition);
+        }
+        
+        .social-link:hover {
+            background-color: var(--primary-color);
+            color: var(--white);
+            transform: translateY(-3px);
+        }
+        
+        /* Footer */
+        .footer {
+            background-color: var(--dark-blue);
+            color: var(--light-gray);
+            padding: 60px 0 20px;
+        }
+        
+        .footer-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-col h4 {
+            color: var(--white);
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-col h4::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background-color: var(--secondary-color);
+        }
+        
+        .footer-list {
+            list-style: none;
+        }
+        
+        .footer-list li {
+            margin-bottom: 12px;
+        }
+        
+        .footer-list a {
+            color: var(--light-gray);
+            transition: var(--transition);
+        }
+        
+        .footer-list a:hover {
+            color: var(--secondary-color);
+            padding-left: 5px;
+        }
+        
+        .footer-contact-item {
+            display: flex;
+            margin-bottom: 15px;
+        }
+        
+        .footer-contact-icon {
+            margin-right: 15px;
+            color: var(--secondary-color);
+        }
+        
+        .footer-newsletter p {
+            margin-bottom: 20px;
+        }
+        
+        .footer-newsletter-form {
+            display: flex;
+        }
+        
+        .footer-newsletter-input {
+            flex: 1;
+            padding: 12px 15px;
+            border: none;
+            border-radius: var(--border-radius) 0 0 var(--border-radius);
+            font-size: 1rem;
+        }
+        
+        .footer-newsletter-btn {
+            background-color: var(--secondary-color);
+            color: var(--white);
+            border: none;
+            border-radius: 0 var(--border-radius) var(--border-radius) 0;
+            padding: 0 20px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .footer-newsletter-btn:hover {
+            background-color: var(--dark-accent);
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Back to Top Button */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background-color: var(--primary-color);
+            color: var(--white);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            z-index: 99;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .back-to-top.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .back-to-top:hover {
+            background-color: var(--dark-green);
+            transform: translateY(-3px);
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 1024px) {
+            .hero-title {
+                font-size: 3rem;
+            }
+            
+            .section-title {
+                font-size: 2.2rem;
+            }
+            
+            .step {
+                flex-direction: column;
+            }
+            
+            .step-image {
+                margin-left: 0;
+                margin-top: 30px;
+                max-width: 100%;
+            }
+            
+            .pricing-plan.premium {
+                transform: scale(1);
+            }
+            
+            .pricing-plan.premium:hover {
+                transform: translateY(-10px);
+            }
+            
+            .contact-form-container {
+                margin-right: 0;
+                margin-bottom: 30px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .nav-menu {
+                position: fixed;
+                top: 70px;
+                left: -100%;
+                width: 70%;
+                height: 100vh;
+                background-color: var(--white);
+                flex-direction: column;
+                padding: 50px 0;
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+                transition: 0.4s;
+                z-index: 999;
+            }
+            
+            .nav-menu.active {
+                left: 0;
+            }
+            
+            .nav-menu li {
+                margin: 15px 0;
+                text-align: center;
+            }
+            
+            .nav-toggle {
+                display: block;
+            }
+            
+            .hero {
+                padding: 140px 0 80px;
+            }
+            
+            .hero-content {
+                flex-direction: column;
+            }
+            
+            .hero-text {
+                margin-right: 0;
+                margin-bottom: 40px;
+                text-align: center;
+            }
+            
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .hero-buttons {
+                justify-content: center;
+            }
+            
+            .analysis-content {
+                flex-direction: column;
+            }
+            
+            .analysis-image {
+                order: -1;
+                margin-bottom: 30px;
+            }
+            
+            .contact-content {
+                flex-direction: column;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .container {
+                padding: 0 15px;
+            }
+            
+            .section {
+                padding: 60px 0;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .hero-title {
+                font-size: 2.2rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .stat-number {
+                font-size: 2.5rem;
+            }
+            
+            .pricing-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .pricing-plan {
+                max-width: 400px;
+                margin: 0 auto;
+            }
+            
+            .footer-newsletter-form {
+                flex-direction: column;
+            }
+            
+            .footer-newsletter-input {
+                border-radius: var(--border-radius);
+                margin-bottom: 10px;
+            }
+            
+            .footer-newsletter-btn {
+                border-radius: var(--border-radius);
+                width: 100%;
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container nav-container">
+            <a href="#home" class="logo">
+                <i class="fas fa-trophy"></i>
+                Sorte Premiada
+            </a>
+            <div class="nav-toggle" id="navToggle">
+                <i class="fas fa-bars"></i>
+            </div>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="#home" class="active">Início</a></li>
+                <li><a href="#features">Recursos</a></li>
+                <li><a href="#how-it-works">Como Funciona</a></li>
+                <li><a href="#analysis">Análise</a></li>
+                <li><a href="#pricing">Planos</a></li>
+                <li><a href="#faq">FAQ</a></li>
+                <li><a href="#cta">Assinar</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1 class="hero-title">Aumente suas chances na loteria com Inteligência Artificial</h1>
+                    <p class="hero-subtitle">Gere jogos baseados em análises estatísticas avançadas e aumente suas probabilidades de ganhar na loteria.</p>
+                    <div class="hero-buttons">
+                        <a href="#pricing" class="btn hero-btn">Comece agora</a>
+                        <a href="#how-it-works" class="btn btn-outline hero-btn">Saiba mais</a>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <img src="https://pixabay.com/get/g8bddaa20ca04307436bdc182c79085fd42703d08d9975294226e3d49e010d0c9fe4b65c6c8b62f3c563e8d841b96ea3e80ee7c8540b426f7ef757a0a4e504925_1280.jpg" alt="Bilhetes de loteria">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="section features">
+        <div class="container">
+            <h2 class="section-title">Nossos Recursos Exclusivos</h2>
+            <div class="features-container">
+                <div class="feature-box">
+                    <div class="feature-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3 class="feature-title">IA Avançada</h3>
+                    <p>Algoritmos inteligentes que analisam padrões históricos e geram combinações com maior probabilidade de acerto.</p>
+                </div>
+                <div class="feature-box">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3 class="feature-title">Análise Estatística</h3>
+                    <p>Veja frequências, atrasos, distribuições e padrões de todos os números nas principais loterias do país.</p>
+                </div>
+                <div class="feature-box">
+                    <div class="feature-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h3 class="feature-title">Acesso via WhatsApp</h3>
+                    <p>Receba seus jogos, resultados e análises diretamente no seu WhatsApp ou Telegram, sem complicações.</p>
+                </div>
+                <div class="feature-box">
+                    <div class="feature-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3 class="feature-title">Sistema de Bolões</h3>
+                    <p>Participe de bolões inteligentes, com jogos otimizados para maximizar as chances de premiação do grupo.</p>
+                </div>
+                <div class="feature-box">
+                    <div class="feature-icon">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                    <h3 class="feature-title">Alertas e Notificações</h3>
+                    <p>Receba alertas de resultados, conferência automática dos seus jogos e notificações de sorteios especiais.</p>
+                </div>
+                <div class="feature-box">
+                    <div class="feature-icon">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <h3 class="feature-title">Personalização Avançada</h3>
+                    <p>Defina seus números preferidos, exclua combinações específicas e ajuste suas estratégias conforme sua preferência.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="how-it-works" class="section how-it-works">
+        <div class="container">
+            <h2 class="section-title">Como Funciona</h2>
+            <div class="steps-container">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3 class="step-title">Cadastre-se em nosso serviço</h3>
+                        <p class="step-desc">Adicione nosso contato no WhatsApp ou Telegram e escolha seu plano de assinatura. É rápido, fácil e seguro.</p>
+                    </div>
+                    <div class="step-image">
+                        <img src="https://pixabay.com/get/gdf7f68d86305d4ac5dc9c8287459dfd9abde4f2be501cb474869d630279111d2ce9ca5b9e0024c5efb7671d406960a792755d35fd321b77c58abcc690ad0c704_1280.jpg" alt="Celular com aplicativo de mensagens">
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3 class="step-title">Solicite jogos personalizados</h3>
+                        <p class="step-desc">Escolha o tipo de loteria, método de geração e defina suas preferências. Nosso sistema cria as melhores combinações para você.</p>
+                    </div>
+                    <div class="step-image">
+                        <img src="https://pixabay.com/get/g05b0ceadec1dbf3075b2dd0d960ef65a6844d7c37ea075a692b42830c21220f482176324f357aacd7f7c6bd026a98a2bd71e8176c8c3143405b4dcc588751c48_1280.jpg" alt="Bilhetes de loteria com números marcados">
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3 class="step-title">Acesse análises estatísticas detalhadas</h3>
+                        <p class="step-desc">Visualize gráficos, mapas de calor e relatórios que mostram padrões e tendências das loterias, ajudando a tomar decisões mais inteligentes.</p>
+                    </div>
+                    <div class="step-image">
+                        <img src="https://pixabay.com/get/g24be624e3756d1182cc56b138887b2b9efce4362e3a0f70348bdaf1e51504c1023de7e4534a1d17b939aaad0f999e1380042c92204e7459212dd7b2caa63886b_1280.jpg" alt="Gráficos de análise estatística">
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h3 class="step-title">Receba resultados e conferência automática</h3>
+                        <p class="step-desc">Após os sorteios, receba notificações com os resultados e a conferência dos seus jogos, economizando seu tempo e evitando erros.</p>
+                    </div>
+                    <div class="step-image">
+                        <img src="https://pixabay.com/get/g48cc17e15fe5b99a6ab465dca52fa861fa1290b42c4331853ca4f8ca92531a4ecaa475eacbab3b5fcb8fc50a8ed8622828c719b61e4edc575d01282369286aef_1280.jpg" alt="Resultados de loteria">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats">
+        <div class="container">
+            <div class="stats-container">
+                <div class="stat-item">
+                    <div class="stat-number" data-count="25000">0</div>
+                    <div class="stat-label">Usuários Ativos</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-count="3">0</div>
+                    <div class="stat-label">Loterias Suportadas</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-count="98">0</div>
+                    <div class="stat-label">% de Satisfação</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-count="1856">0</div>
+                    <div class="stat-label">Prêmios Ganhos</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Analysis Section -->
+    <section id="analysis" class="section analysis">
+        <div class="container">
+            <div class="analysis-content">
+                <div class="analysis-text">
+                    <h2 class="analysis-title">Análise Estatística Avançada</h2>
+                    <p>Nossa plataforma utiliza algoritmos sofisticados para analisar milhares de resultados anteriores e identificar padrões que podem aumentar suas chances de ganhar.</p>
+                    <ul class="analysis-list">
+                        <li>Análise de frequência dos números mais e menos sorteados</li>
+                        <li>Cálculo de atraso de números (quantos sorteios sem aparecer)</li>
+                        <li>Distribuição por dezenas e análise de paridade</li>
+                        <li>Padrões de números primos vs. não-primos</li>
+                        <li>Soma dos números nos jogos premiados</li>
+                        <li>Comparação com seus jogos anteriores</li>
+                        <li>Visualizações interativas com mapas de calor e gráficos</li>
+                    </ul>
+                </div>
+                <div class="analysis-image">
+                    <img src="https://pixabay.com/get/gf4803dd44dcecd65ff66d89b198151230ad3e539800afa0c0373f60e5ffa0089bf5a3f037fd018c047030b627703b29661d26add5ff8cac611914ddfa00a9a6a_1280.jpg" alt="Análise estatística de loteria">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="section pricing">
+        <div class="container">
+            <h2 class="section-title">Nossos Planos</h2>
+            <div class="pricing-container">
+                <div class="pricing-plan">
+                    <div class="pricing-header">
+                        <h3 class="pricing-title">Básico</h3>
+                        <div class="pricing-price">R$29,90</div>
+                        <div class="pricing-period">por mês</div>
+                    </div>
+                    <ul class="pricing-features">
+                        <li>Geração de 10 jogos semanais</li>
+                        <li>1 tipo de loteria à escolha</li>
+                        <li>Análise estatística básica</li>
+                        <li>Notificações de resultados</li>
+                        <li>Acesso via WhatsApp ou Telegram</li>
+                        <li>Suporte por e-mail</li>
+                    </ul>
+                    <a href="#cta" class="btn pricing-btn">Assinar Agora</a>
+                </div>
+                <div class="pricing-plan premium">
+                    <div class="pricing-popular">Popular</div>
+                    <div class="pricing-header">
+                        <h3 class="pricing-title">Premium</h3>
+                        <div class="pricing-price">R$59,90</div>
+                        <div class="pricing-period">por mês</div>
+                    </div>
+                    <ul class="pricing-features">
+                        <li>Geração ilimitada de jogos</li>
+                        <li>Todas as loterias disponíveis</li>
+                        <li>Análise estatística avançada</li>
+                        <li>Sistemas de fechamento matemático</li>
+                        <li>Bolões exclusivos</li>
+                        <li>Conferência automática</li>
+                        <li>Suporte prioritário</li>
+                    </ul>
+                    <a href="#cta" class="btn btn-secondary pricing-btn">Assinar Agora</a>
+                </div>
+                <div class="pricing-plan">
+                    <div class="pricing-header">
+                        <h3 class="pricing-title">Anual</h3>
+                        <div class="pricing-price">R$499,90</div>
+                        <div class="pricing-period">por ano</div>
+                    </div>
+                    <ul class="pricing-features">
+                        <li>Todos os benefícios do Premium</li>
+                        <li>2 meses grátis</li>
+                        <li>Acesso a webinars exclusivos</li>
+                        <li>Consultoria personalizada</li>
+                        <li>Grupo VIP de estratégias</li>
+                        <li>Prioridade em novos recursos</li>
+                    </ul>
+                    <a href="#cta" class="btn pricing-btn">Assinar Agora</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="section testimonials">
+        <div class="container">
+            <h2 class="section-title">O Que Dizem Nossos Clientes</h2>
+            <div class="testimonials-container">
+                <div class="testimonial-slide active">
+                    <div class="testimonial-text">
+                        Uso o Sorte Premiada há 3 meses e já acertei a quadra da Mega-Sena duas vezes! As análises estatísticas realmente me ajudaram a fazer escolhas mais inteligentes. Recomendo a todos os apostadores.
+                    </div>
+                    <div class="testimonial-author">Carlos Silva</div>
+                    <div class="testimonial-role">Apostador há 5 anos</div>
+                </div>
+                <div class="testimonial-slide">
+                    <div class="testimonial-text">
+                        A facilidade de receber os jogos pelo WhatsApp é fantástica! Além disso, os bolões exclusivos me fizeram economizar dinheiro e aumentar as chances. Nosso grupo já ganhou vários prêmios na Lotofácil.
+                    </div>
+                    <div class="testimonial-author">Ana Rodrigues</div>
+                    <div class="testimonial-role">Usuária Premium</div>
+                </div>
+                <div class="testimonial-slide">
+                    <div class="testimonial-text">
+                        Os sistemas de fechamento matemático são impressionantes. Consegui acertar 14 números na Lotofácil usando uma estratégia que nunca teria descoberto sozinho. O investimento valeu cada centavo!
+                    </div>
+                    <div class="testimonial-author">Roberto Martins</div>
+                    <div class="testimonial-role">Assinante há 8 meses</div>
+                </div>
+                <div class="testimonial-indicators">
+                    <div class="testimonial-dot active" data-slide="0"></div>
+                    <div class="testimonial-dot" data-slide="1"></div>
+                    <div class="testimonial-dot" data-slide="2"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="section faq">
+        <div class="container">
+            <h2 class="section-title">Perguntas Frequentes</h2>
+            <div class="faq-container">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Como o Sorte Premiada aumenta minhas chances de ganhar?
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            O Sorte Premiada utiliza análise estatística avançada e algoritmos de IA para identificar padrões em sorteios anteriores. Embora não possamos garantir vitórias (a loteria ainda é um jogo de probabilidades), nossos métodos matemáticos e estatísticos ajudam a criar jogos mais estratégicos com base em dados históricos, aumentando potencialmente suas chances em comparação com escolhas aleatórias.
+                        </div>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Quais loterias são suportadas pelo sistema?
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            Atualmente, o Sorte Premiada suporta Mega-Sena, Lotofácil e Quina. Estamos constantemente trabalhando para adicionar mais loterias ao nosso sistema. Os usuários dos planos Premium e Anual têm acesso a todas as loterias disponíveis.
+                        </div>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Como funciona o acesso via WhatsApp e Telegram?
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            Após assinar um plano, você adiciona nosso número oficial como contato e inicia uma conversa. A partir daí, você pode solicitar jogos, ver resultados e acessar análises através de comandos simples ou conversa natural. O sistema é intuitivo e envia mensagens formatadas de maneira clara e fácil de entender.
+                        </div>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Posso personalizar os jogos gerados?
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            Sim! Você pode definir números fixos que deseja incluir, excluir números específicos, escolher métodos de geração (aleatório, estatístico, matemático) e aplicar filtros como distribuição de paridade (pares/ímpares) ou faixas numéricas. Todas essas opções estão disponíveis através do chat.
+                        </div>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Como funcionam os bolões do Sorte Premiada?
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            Os bolões são grupos de apostadores que compartilham o custo e os potenciais prêmios. Nossa plataforma automatiza a criação de bolões entre usuários, otimiza a escolha dos jogos para maximizar a cobertura numérica e gerencia a divisão dos prêmios. Os participantes recebem notificações sobre a formação do bolão, jogos incluídos e resultados.
+                        </div>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Como cancelar ou alterar minha assinatura?
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            Você pode gerenciar sua assinatura diretamente pelo WhatsApp ou Telegram usando o comando "assinatura". É possível fazer upgrade, downgrade ou cancelamento a qualquer momento. Caso cancele, seu acesso permanece ativo até o final do período já pago.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section id="cta" class="section cta">
+        <div class="container">
+            <div class="cta-content">
+                <h2 class="cta-title">Transforme suas Chances de Ganhar Hoje Mesmo!</h2>
+                <p class="cta-description">Não deixe para amanhã! Com a Sorte Premiada, você tem acesso aos mais avançados algoritmos para geração de números e análises estatísticas que aumentam significativamente suas chances de ganhar. Assine agora e comece a jogar de forma inteligente.</p>
+                <a href="#pricing" class="cta-btn">QUERO AUMENTAR MINHAS CHANCES AGORA!</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-col">
+                    <h4>Sorte Premiada</h4>
+                    <p>Utilizamos inteligência artificial e análise estatística avançada para gerar jogos de loteria com maiores chances de premiação.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Links Rápidos</h4>
+                    <ul class="footer-list">
+                        <li><a href="#home">Início</a></li>
+                        <li><a href="#features">Recursos</a></li>
+                        <li><a href="#how-it-works">Como Funciona</a></li>
+                        <li><a href="#analysis">Análise</a></li>
+                        <li><a href="#pricing">Planos</a></li>
+                        <li><a href="#faq">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Loterias</h4>
+                    <ul class="footer-list">
+                        <li><a href="#">Mega-Sena</a></li>
+                        <li><a href="#">Lotofácil</a></li>
+                        <li><a href="#">Quina</a></li>
+                        <li><a href="#">Métodos de Geração</a></li>
+                        <li><a href="#">Estatísticas</a></li>
+                        <li><a href="#">Bolões</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col footer-newsletter">
+                    <h4>Newsletter</h4>
+                    <p>Inscreva-se para receber dicas e novidades sobre loterias e análises estatísticas exclusivas.</p>
+                    <form class="footer-newsletter-form">
+                        <input type="email" class="footer-newsletter-input" placeholder="Seu e-mail" required>
+                        <button type="submit" class="footer-newsletter-btn">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Sorte Premiada - Todos os direitos reservados. CNPJ: 12.345.678/0001-90 | Av. Tecnologia, 123 - São Paulo, SP</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <a href="#" class="back-to-top" id="backToTop">
+        <i class="fas fa-chevron-up"></i>
+    </a>
+
+    <!-- JavaScript -->
+    <script>
+        // Navigation Menu Toggle
+        const navToggle = document.getElementById('navToggle');
+        const navMenu = document.getElementById('navMenu');
+        
+        navToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+        
+        // Close menu when clicking on a link
+        const navLinks = document.querySelectorAll('.nav-menu a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+            });
+        });
+        
+        // Sticky Header
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('.header');
+            if (window.scrollY > 100) {
+                header.classList.add('sticky');
+            } else {
+                header.classList.remove('sticky');
+            }
+        });
+        
+        // Back to Top Button
+        const backToTopButton = document.getElementById('backToTop');
+        
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 500) {
+                backToTopButton.classList.add('active');
+            } else {
+                backToTopButton.classList.remove('active');
+            }
+        });
+        
+        backToTopButton.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        // Stats Counter Animation
+        const statNumbers = document.querySelectorAll('.stat-number');
+        
+        function animateStats() {
+            statNumbers.forEach(stat => {
+                const target = parseInt(stat.getAttribute('data-count'));
+                const duration = 2000; // 2 seconds
+                const steps = 50;
+                const stepValue = target / steps;
+                let current = 0;
+                
+                const counter = setInterval(() => {
+                    current += stepValue;
+                    if (current > target) {
+                        stat.textContent = target.toLocaleString();
+                        clearInterval(counter);
+                    } else {
+                        stat.textContent = Math.floor(current).toLocaleString();
+                    }
+                }, duration / steps);
+            });
+        }
+        
+        // Check if element is in viewport
+        function isInViewport(element) {
+            const rect = element.getBoundingClientRect();
+            return (
+                rect.top >= 0 &&
+                rect.left >= 0 &&
+                rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+                rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+            );
+        }
+        
+        // Trigger counter animation when stats section comes into view
+        let statsAnimated = false;
+        window.addEventListener('scroll', () => {
+            if (!statsAnimated && isInViewport(document.querySelector('.stats'))) {
+                animateStats();
+                statsAnimated = true;
+            }
+        });
+        
+        // FAQ Accordion
+        const faqItems = document.querySelectorAll('.faq-item');
+        
+        faqItems.forEach(item => {
+            const question = item.querySelector('.faq-question');
+            
+            question.addEventListener('click', () => {
+                // Close all other items
+                faqItems.forEach(otherItem => {
+                    if (otherItem !== item) {
+                        otherItem.classList.remove('active');
+                    }
+                });
+                
+                // Toggle current item
+                item.classList.toggle('active');
+            });
+        });
+        
+        // Testimonial Slider
+        const testimonialSlides = document.querySelectorAll('.testimonial-slide');
+        const testimonialDots = document.querySelectorAll('.testimonial-dot');
+        let currentSlide = 0;
+        
+        function showSlide(index) {
+            testimonialSlides.forEach(slide => slide.classList.remove('active'));
+            testimonialDots.forEach(dot => dot.classList.remove('active'));
+            
+            testimonialSlides[index].classList.add('active');
+            testimonialDots[index].classList.add('active');
+            currentSlide = index;
+        }
+        
+        // Dot navigation
+        testimonialDots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                showSlide(index);
+            });
+        });
+        
+        // Auto slide
+        function autoSlide() {
+            const nextSlide = (currentSlide + 1) % testimonialSlides.length;
+            showSlide(nextSlide);
+        }
+        
+        let testimonialInterval = setInterval(autoSlide, 5000);
+        
+        // Pause auto slide on hover
+        const testimonialContainer = document.querySelector('.testimonials-container');
+        
+        testimonialContainer.addEventListener('mouseenter', () => {
+            clearInterval(testimonialInterval);
+        });
+        
+        testimonialContainer.addEventListener('mouseleave', () => {
+            testimonialInterval = setInterval(autoSlide, 5000);
+        });
+        
+        // Newsletter Form Validation
+        const footerNewsletterForm = document.querySelector('.footer-newsletter-form');
+        
+        if (footerNewsletterForm) {
+            footerNewsletterForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                const email = e.target.querySelector('input[type="email"]').value;
+                
+                // Email validation
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email)) {
+                    alert('Por favor, insira um endereço de e-mail válido.');
+                    return;
+                }
+                
+                // Here you would typically send the form data to your server
+                // For this example, we'll just show a success message
+                alert('Obrigado pela inscrição! Em breve você receberá nossas análises e dicas exclusivas.');
+                e.target.reset();
+            });
+        }
+        
+        // Smooth scrolling for all anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Active Navigation Menu based on scroll position
+        function setActiveNavLink() {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.nav-menu a');
+            
+            let currentSection = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (window.scrollY >= (sectionTop - 150)) {
+                    currentSection = section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${currentSection}`) {
+                    link.classList.add('active');
+                }
+            });
+        }
+        
+        window.addEventListener('scroll', setActiveNavLink);
+        
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', () => {
+            // Set initial active nav link
+            setActiveNavLink();
+            
+            // Check if stats are in view on load
+            if (isInViewport(document.querySelector('.stats'))) {
+                animateStats();
+                statsAnimated = true;
+            }
+            
+            // Open the first FAQ item
+            faqItems[0].classList.add('active');
+        });
+    </script>
+</body>
+</html>
