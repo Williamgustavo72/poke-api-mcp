@@ -1,0 +1,729 @@
+{
+  "name": "Receber mensagens",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        60
+      ],
+      "id": "919fdc82-822d-45a7-b53f-91cd84f44267",
+      "name": "Telegram Trigger",
+      "webhookId": "6ab86f9d-9254-498d-b430-634e8ab44b4c",
+      "credentials": {
+        "telegramApi": {
+          "id": "oeCZf7ImYM7UDYf0",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "310c0cce-bd8e-43b1-b40e-850a9d8a1daa",
+              "name": "Quem mandou",
+              "value": "={{ $json.message.from.id }}",
+              "type": "string"
+            },
+            {
+              "id": "caf10002-6d7c-42f1-b088-1b18c8a39096",
+              "name": "Mensagem",
+              "value": "={{ $json.message.text }}",
+              "type": "string"
+            },
+            {
+              "id": "04f7b0d5-9a52-4594-b71c-04a1b4c95e47",
+              "name": "Chat Id",
+              "value": "={{ $json.message.chat.id }}",
+              "type": "string"
+            },
+            {
+              "id": "e90cf818-d301-4ee8-9045-28475b788d43",
+              "name": "Nome da pessoa",
+              "value": "={{ $json.message.chat.username }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        220,
+        60
+      ],
+      "id": "4815ab9b-d654-4003-81fb-9c4f5822cacb",
+      "name": "Dados Telegram"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "DTzDaSyq3dBSGmpi",
+          "mode": "list",
+          "cachedResultName": "Server Pokemon"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        440,
+        60
+      ],
+      "id": "65017bb9-4f5e-4c93-9786-73d1f63bf541",
+      "name": "Execute Workflow"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Dados Telegram').item.json['Chat Id'] }}",
+        "text": "={{ $json.Mensagem }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1100,
+        -40
+      ],
+      "id": "006d3277-55be-4586-bc4b-6895faffef37",
+      "name": "Telegram",
+      "webhookId": "bbe05af4-9f09-4574-b646-2543451f725d",
+      "credentials": {
+        "telegramApi": {
+          "id": "oeCZf7ImYM7UDYf0",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4177dabe-c3fc-4972-a42b-0aae9d516b89",
+              "name": "Mensagem",
+              "value": "={{ $json.output.mensagem }}",
+              "type": "string"
+            },
+            {
+              "id": "f52f3849-1959-4e96-a7e8-60f7a73ad580",
+              "name": "arquivos",
+              "value": "={{ $json.output.arquivos }}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        660,
+        60
+      ],
+      "id": "2b2ab1c3-65d7-46b3-a288-fe7b078dca7c",
+      "name": "Salva Variaveis"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "da4cff94-b90b-4615-be05-68fd0f1e18ee",
+              "leftValue": "={{ $json.Mensagem }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "db060498-b2ae-4714-8814-6685f2d68b79",
+              "leftValue": "={{ $json.arquivos }}",
+              "rightValue": "",
+              "operator": {
+                "type": "object",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        880,
+        60
+      ],
+      "id": "02241d65-1c39-4993-8094-a7e389d854ec",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "operation": "text",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        1980,
+        260
+      ],
+      "id": "0d6fa2bc-e57e-4465-a211-b887f1d0d865",
+      "name": "Extract from File"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "599c61d9-d57f-489f-bb31-7cb8a3e5cdd1",
+              "name": "mensagem",
+              "value": "={{ $json.Mensagem }}",
+              "type": "string"
+            },
+            {
+              "id": "c776defc-0ff9-48d4-8f56-3f1306f29e0b",
+              "name": "relatorioTipos",
+              "value": "=http://31.97.163.124:8001/api/file/{{ $json.arquivos.tipos }}",
+              "type": "string"
+            },
+            {
+              "id": "fd381dd1-ac2a-452a-93c9-830d3eb4e24a",
+              "name": "relatorioTop",
+              "value": "=http://31.97.163.124:8001/api/file/{{ $json.arquivos.top }}",
+              "type": "string"
+            },
+            {
+              "id": "8a63990d-2d46-4875-b9f2-d8517039efd8",
+              "name": "=imagemGrafico",
+              "value": "=http://31.97.163.124:8001/api/file/{{ $json.arquivos.grafico }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1100,
+        160
+      ],
+      "id": "30a83324-110d-4a92-b7db-f95b5aaa8dc1",
+      "name": "Variaveis Relatorio"
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Variaveis Relatorio').item.json.imagemGrafico }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1540,
+        -140
+      ],
+      "id": "35f5d967-6b4e-4c0d-9416-709f1f2dc77e",
+      "name": "Baixa Imagem Grafico"
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Variaveis Relatorio').item.json.relatorioTop }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1540,
+        260
+      ],
+      "id": "90f89e31-9e07-4917-851f-c5afed4a51ec",
+      "name": "Relatorio Experiencia"
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Variaveis Relatorio').item.json.relatorioTipos }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1540,
+        660
+      ],
+      "id": "ae75ed4f-4099-4afe-828b-7083661783b4",
+      "name": "Relatorio Tipos"
+    },
+    {
+      "parameters": {
+        "operation": "toBinary",
+        "sourceProperty": "file",
+        "options": {
+          "fileName": "Grafico de distribuicao de Pokemon por tipo.png"
+        }
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        1760,
+        -140
+      ],
+      "id": "be9b62f6-12b6-492c-9bbf-6bb99b391893",
+      "name": "Converter IMG base64 em binario"
+    },
+    {
+      "parameters": {
+        "operation": "toBinary",
+        "sourceProperty": "file",
+        "options": {
+          "fileName": "Relatorio Experiencia.csv",
+          "mimeType": "text/csv"
+        }
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        1760,
+        260
+      ],
+      "id": "0838a30a-c83c-442e-beae-0a68259bd7fb",
+      "name": "Converter Relatorio Experiencia"
+    },
+    {
+      "parameters": {
+        "operation": "toBinary",
+        "sourceProperty": "file",
+        "options": {
+          "fileName": "Relatorio Tipos.csv",
+          "mimeType": "text/csv"
+        }
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        1760,
+        660
+      ],
+      "id": "07a8510d-d589-411b-a7aa-08a41e104a64",
+      "name": "Converter Relatorio Tipos"
+    },
+    {
+      "parameters": {
+        "operation": "text",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        1980,
+        660
+      ],
+      "id": "ecca62c2-6b2e-448b-bdce-2c65f23f9352",
+      "name": "Extract from File1"
+    },
+    {
+      "parameters": {
+        "operation": "sendDocument",
+        "chatId": "={{ $('Dados Telegram').item.json['Chat Id'] }}",
+        "binaryData": true,
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1980,
+        -140
+      ],
+      "id": "dbdc6326-98ca-4e73-a606-e8bc62171400",
+      "name": "Envia Grafico",
+      "webhookId": "4c1de481-2d8a-4fd4-aa19-1db0fe4ec291",
+      "credentials": {
+        "telegramApi": {
+          "id": "oeCZf7ImYM7UDYf0",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "sendDocument",
+        "chatId": "={{ $('Dados Telegram').item.json['Chat Id'] }}",
+        "binaryData": true,
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1980,
+        60
+      ],
+      "id": "2f14f431-e738-4994-a9dc-5457ce3af2ab",
+      "name": "Envia Relatorio Exp",
+      "webhookId": "4c1de481-2d8a-4fd4-aa19-1db0fe4ec291",
+      "credentials": {
+        "telegramApi": {
+          "id": "oeCZf7ImYM7UDYf0",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Dados Telegram').item.json['Chat Id'] }}",
+        "text": "={{ $json.data }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        2200,
+        260
+      ],
+      "id": "883d2b17-3e46-4b02-a641-c882769b7762",
+      "name": "Envia Dados Relatorio Exp",
+      "webhookId": "4c1de481-2d8a-4fd4-aa19-1db0fe4ec291",
+      "credentials": {
+        "telegramApi": {
+          "id": "oeCZf7ImYM7UDYf0",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "sendDocument",
+        "chatId": "={{ $('Dados Telegram').item.json['Chat Id'] }}",
+        "binaryData": true,
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1980,
+        460
+      ],
+      "id": "41e36468-1cc2-4eb9-89ce-475f9fe93b86",
+      "name": "Envia Relatorio Tipos",
+      "webhookId": "4c1de481-2d8a-4fd4-aa19-1db0fe4ec291",
+      "credentials": {
+        "telegramApi": {
+          "id": "oeCZf7ImYM7UDYf0",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Dados Telegram').item.json['Chat Id'] }}",
+        "text": "={{ $json.data }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        2200,
+        660
+      ],
+      "id": "02d2803b-b4fe-4128-ad02-bfe847c7627d",
+      "name": "Envia Dados Relatorio Tipos",
+      "webhookId": "4c1de481-2d8a-4fd4-aa19-1db0fe4ec291",
+      "credentials": {
+        "telegramApi": {
+          "id": "oeCZf7ImYM7UDYf0",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Dados Telegram').item.json['Chat Id'] }}",
+        "text": "={{ $json.mensagem }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1320,
+        160
+      ],
+      "id": "9915fae8-1803-42e5-9ea0-789417af60ca",
+      "name": "Mensagem Complementar",
+      "webhookId": "c75f50b7-3ac9-4f0a-9a94-0844504c97ec",
+      "credentials": {
+        "telegramApi": {
+          "id": "oeCZf7ImYM7UDYf0",
+          "name": "Telegram account"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "Telegram Trigger": [
+      {
+        "json": {
+          "update_id": 295215962,
+          "message": {
+            "message_id": 37,
+            "from": {
+              "id": 1047499090,
+              "is_bot": false,
+              "first_name": "William",
+              "last_name": "Gustavo",
+              "username": "WilliamGustavo",
+              "language_code": "pt-br"
+            },
+            "chat": {
+              "id": 1047499090,
+              "first_name": "William",
+              "last_name": "Gustavo",
+              "username": "WilliamGustavo",
+              "type": "private"
+            },
+            "date": 1749765071,
+            "text": "gere por favor um realtorio comparando os 10 pokemons"
+          }
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Dados Telegram": {
+      "main": [
+        [
+          {
+            "node": "Execute Workflow",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Dados Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Workflow": {
+      "main": [
+        [
+          {
+            "node": "Salva Variaveis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Salva Variaveis": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Variaveis Relatorio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "Envia Dados Relatorio Exp",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Variaveis Relatorio": {
+      "main": [
+        [
+          {
+            "node": "Mensagem Complementar",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Baixa Imagem Grafico": {
+      "main": [
+        [
+          {
+            "node": "Converter IMG base64 em binario",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Relatorio Experiencia": {
+      "main": [
+        [
+          {
+            "node": "Converter Relatorio Experiencia",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Relatorio Tipos": {
+      "main": [
+        [
+          {
+            "node": "Converter Relatorio Tipos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Converter IMG base64 em binario": {
+      "main": [
+        [
+          {
+            "node": "Envia Grafico",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Converter Relatorio Experiencia": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Envia Relatorio Exp",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Converter Relatorio Tipos": {
+      "main": [
+        [
+          {
+            "node": "Extract from File1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Envia Relatorio Tipos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File1": {
+      "main": [
+        [
+          {
+            "node": "Envia Dados Relatorio Tipos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Envia Dados Relatorio Tipos": {
+      "main": [
+        []
+      ]
+    },
+    "Mensagem Complementar": {
+      "main": [
+        [
+          {
+            "node": "Baixa Imagem Grafico",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Relatorio Experiencia",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Relatorio Tipos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "40c34ac7-3e7a-40f3-8b99-598edfa3fca0",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "86461a0cf7c20e28d1d5b8832b71453a274fa0eee58c62adb6647d722574e78b"
+  },
+  "id": "BOOhd4dJWvELbdev",
+  "tags": []
+}

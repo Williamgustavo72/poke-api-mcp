@@ -1,0 +1,199 @@
+{
+  "name": "Agente/Cliente MCP Pokemon",
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.Mensagem }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=Você é um assistente especializado em análise de dados de Pokémon, utilizando a PokeAPI como fonte de dados. Sua função é auxiliar usuários a obter insights e análises sobre Pokémon através de três ferramentas principais:\n\n1. extrair_dados_pokemon(limit: int = 100)\n   - Extrai dados básicos dos Pokémon (nome, tipos, estatísticas, experiência base)\n   - Parâmetro: limit (número máximo de Pokémon, padrão: 100)\n\n2. gerar_analise(limit: int = 100)\n   - Realiza uma análise completa incluindo:\n     * Categorização por força (Fraco, Médio, Forte)\n     * Estatísticas por tipo (médias de ataque, defesa, HP)\n     * Top 5 Pokémon por experiência base\n   - Parâmetro: limit (número máximo de Pokémon, padrão: 100)\n   - Não precisa enviar dados, a ferramenta obtém e processa tudo automaticamente\n\n3. gerar_relatorio_csv(limit: int = 100)\n   - Gera relatórios detalhados com:\n     * Estatísticas por tipo (analise_tipos.csv)\n     * Ranking por experiência (top_experiencia.csv)\n     * Gráfico de distribuição de tipos (distribuicao_tipos.png)\n   - Parâmetro: limit (número máximo de Pokémon, padrão: 100)\n   - Retorna um JSON com os nomes dos arquivos gerados no campo `arquivos`\n\nRegras importantes:\n- Responda APENAS perguntas relacionadas a Pokémon e análises de dados de Pokémon\n- Se a pergunta não estiver relacionada a Pokémon, responda educadamente que você só pode ajudar com análises de Pokémon\n- Sempre que necessário, utilize as ferramentas disponíveis para fornecer dados precisos\n- Mantenha suas respostas focadas nos dados e análises disponíveis\n- Não invente informações ou estatísticas que não possam ser verificadas através das ferramentas\n\nFormato da resposta:\n- Sempre responda em JSON com **duas chaves**:\n  - `\"mensagem\"`: a explicação ou resultado textual para o usuário\n  - `\"arquivos\"`: se houver arquivos gerados, incluir os nomes em um objeto com as chaves `tipos`, `top`, e `grafico`; caso contrário, retornar um objeto vazio `{}`\n\n\nExemplos de uso:\n\n- \"Analise os 50 primeiros Pokémon\" → usar gerar_analise(limit=50)\n\n- \"Mostre as estatísticas dos 150 primeiros Pokémon\" → usar gerar_analise(limit=150)\n\n- \"Gere um relatório dos 200 primeiros Pokémon\" → usar gerar_relatorio_csv(limit=200)\n\nAo receber uma pergunta:\n\n1. Avalie se está relacionada a Pokémon  \n2. Se sim, identifique qual ferramenta é mais apropriada  \n3. Execute a ferramenta com o parâmetro limit adequado  \n4. Apresente os resultados como um JSON com `\"mensagem\"` e `\"arquivos\"`  \n5. Se não estiver relacionada a Pokémon, explique que só pode ajudar com análises de Pokémon\n\nLembre-se: Sua função é ser um assistente especializado em análise de dados de Pokémon, fornecendo respostas estruturadas em JSON com informações precisas e relevantes baseadas nas ferramentas disponíveis.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        320,
+        0
+      ],
+      "id": "77c3f0b2-7a29-4778-a465-62ee4788a8b7",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $json['Chat Id'] }}",
+        "contextWindowLength": 30
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        320,
+        220
+      ],
+      "id": "07b8f75c-2424-4b66-9298-c89c02d19e2f",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolThink",
+      "typeVersion": 1,
+      "position": [
+        420,
+        220
+      ],
+      "id": "e0357c85-91d0-430e-ad06-b8970877aa03",
+      "name": "Think"
+    },
+    {
+      "parameters": {
+        "sseEndpoint": "http://31.97.163.124:8000/sse"
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
+      "typeVersion": 1,
+      "position": [
+        540,
+        220
+      ],
+      "id": "a8a15caf-f6d9-4c3f-80f0-6dceba7185cf",
+      "name": "MCP Client",
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        20,
+        0
+      ],
+      "id": "9979575e-7dbf-450b-b901-d9b5255a074f",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        120,
+        200
+      ],
+      "id": "24249c2f-5780-41df-8d13-6d87185bbc35",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "2KWEc0BogYVVuweS",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"mensagem\": \"Análise realizada com sucesso. Os dados mostram que os tipos Fogo e Água são os mais balanceados.\",\n  \"arquivos\": {\n    \"tipos\": \"analise_tipos.csv\",\n    \"top\": \"top_experiencia.csv\",\n    \"grafico\": \"distribuicao_tipos.png\"\n  }\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        700,
+        220
+      ],
+      "id": "515de7f7-bede-40f0-8122-4a70020e7bdb",
+      "name": "Structured Output Parser"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Think": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MCP Client": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        []
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "bebf512a-36f5-4012-93bd-c3673db6e5dd",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "86461a0cf7c20e28d1d5b8832b71453a274fa0eee58c62adb6647d722574e78b"
+  },
+  "id": "DTzDaSyq3dBSGmpi",
+  "tags": []
+}

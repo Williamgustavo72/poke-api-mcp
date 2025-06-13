@@ -1,0 +1,12 @@
+fastapi==0.109.2
+uvicorn==0.27.1
+pandas==2.2.0
+matplotlib==3.8.2
+requests==2.31.0
+python-dotenv==1.0.1
+seaborn==0.12.2
+aiohttp==3.9.3
+starlette==0.36.3
+sse-starlette==1.8.2
+fastmcp>=0.1.0
+numpy==1.24.3 
